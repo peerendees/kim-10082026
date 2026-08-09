@@ -9,6 +9,39 @@ obwohl der Container läuft.
 
 ---
 
+## Standardweg · Auto-Deploy über die Coolify-GitHub-App
+
+**Push auf `main` deployt automatisch.** Bestätigt am 10. Aug 2026: rund eine Minute
+zwischen Push und Live, ohne SSH. Die Anbindung läuft über die Coolify-GitHub-App,
+deshalb steht am Repo **kein** klassischer Webhook (`gh api repos/.../hooks` → `[]`).
+
+Damit das so bleibt, müssen in der Coolify-Resource drei Dinge stehen:
+
+| Feld | Wert |
+|------|------|
+| Source | GitHub App (nicht Deploy Key, nicht Public Repository) |
+| Branch | `main` |
+| Automatic Deployment | aktiv |
+
+Kein paralleler manueller Container aus `/opt` oder `/tmp` laufen lassen, sonst
+konkurrieren zwei Container um dieselbe Traefik-Host-Regel (siehe
+`COOLIFY-REPARATUR.md`, 3.2).
+
+### Nach dem Push prüfen
+
+```bash
+diff <(curl -s https://kim-10082026.berent.ai) index.html \
+  && echo "live == lokal" || echo "live hinkt hinterher"
+```
+
+Nginx liefert die `index.html` unverändert aus, die Dateien müssen also identisch
+sein. Sagt der Befehl direkt nach dem Push „live hinkt hinterher", eine Minute
+warten und wiederholen. Bleibt es dabei, greift die Automatik nicht: in Coolify
+unter **Deployments** nachsehen, ob ein Lauf gestartet wurde, und den Schalter für
+automatisches Deployen prüfen. Erst danach auf Pfad A ausweichen.
+
+---
+
 ## Vor jeder Demo · 60-Sekunden-Check
 
 ```bash
@@ -26,9 +59,11 @@ curl -sI https://kim-10082026.berent.ai | head -3
 
 ---
 
-## Pfad A · Zuverlässig (empfohlen für Demos)
+## Pfad A · Notfall per SSH
 
-Direkt per SSH + `docker-compose.yaml` im Repo. Umgeht Coolify-UI-Bugs.
+Direkt per SSH + `docker-compose.yaml` im Repo. Umgeht Coolify-UI-Bugs. Nur
+nutzen, wenn der Auto-Deploy oben nachweislich nicht greift, und danach den
+manuellen Container wieder abräumen, damit kein Domain-Konflikt entsteht.
 
 ### 1 · Repo vorbereiten (lokal)
 
@@ -63,6 +98,8 @@ curl -sI https://NEU.berent.ai | head -3
 ```
 
 ### 4 · Updates nach Git-Push
+
+Im Normalfall nicht nötig, das erledigt der Auto-Deploy. Nur im Notfall:
 
 ```bash
 cd /opt/REPO-NAME && git pull && docker compose -p PROJEKTNAME up -d --build
