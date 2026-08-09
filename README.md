@@ -17,8 +17,10 @@ kim-10082026/
 │   ├── js/main.js          ← Kopierbuttons
 │   ├── fonts/              ← lokal gehostet, DSGVO-konform
 │   └── images/             ← Favicon
-├── Dockerfile              ← Coolify-Deployment
+├── Dockerfile
+├── docker-compose.yaml     ← Traefik + root_default (siehe DEPLOY-RUNBOOK.md)
 ├── nginx.conf
+├── DEPLOY-RUNBOOK.md         ← verbindliche Deploy-Anleitung Hostinger
 └── README.md
 ```
 
@@ -71,23 +73,21 @@ Doppelklick greift nur die Rückfallebene.
 
 ---
 
-## Deployment über Coolify
+## Deployment
 
-Statische Seite, keine Build-Schritte, keine Abhängigkeiten. Das Repo enthält
-`docker-compose.yaml` mit explizitem Traefik-Port-Label (Workaround für Coolify-404).
+**Vollständige Anleitung:** [DEPLOY-RUNBOOK.md](DEPLOY-RUNBOOK.md)
 
-1. In Coolify neue Resource → Private Repository (GitHub App)
-2. Destination: **Standalone Docker (traefik-root-default)** — wie die laufenden
-   BERENT-Seiten, nicht `coolify`
-3. Build Pack: **Docker Compose** · Compose-Datei: `/docker-compose.yaml`
-4. Domain: `https://kim-10082026.berent.ai` · Port Exposes: `80`
-5. **Custom Docker Options leeren** (keine Chrome-/FUSE-Flags von anderen Apps)
-6. Deploy
-7. Cloudflare: A-Record `kim-10082026` → Server-IP, Proxy wie bei `blog`
+Kurz: Statische Seite auf Hostinger. Öffentlicher Proxy ist `root-traefik-1` im Netz
+`root_default` — nicht Coolifys Standard-Netz allein. Für Demos: Deploy per SSH +
+`docker-compose.yaml` (Pfad A im Runbook).
 
-Die Schriften liegen im Image und werden von derselben Domain ausgeliefert.
-Es gibt keinen einzigen Request an einen Drittanbieter, damit auch keine
-Übertragung von IP-Adressen an US-Server.
+Live-Check:
+
+```bash
+curl -sI https://kim-10082026.berent.ai | head -3
+```
+
+Schriften und Assets liegen im Image, kein Request an Drittanbieter (DSGVO).
 
 ---
 
