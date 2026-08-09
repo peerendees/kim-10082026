@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI-Masterclass · Datenbank-Anbindung mit Supabase</title>
+<meta name="description" content="Arbeitsunterlage zur Masterclass-Session: eine eigene Kontakte-Datenbank mit Supabase als Grundlage für das eigene CRM.">
+<link rel="icon" type="image/png" href="/assets/images/favicon-32.png">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="nav" href="https://berent.ai">
+      <span class="plus-mark"></span>
+      <span>BERENT.AI — Beratung + Entwicklung</span>
+    </a>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">KI-Masterclass · KOERTING Institut</div>
+  <h1>Deine erste eigene<br>Datenbank</h1>
+  <p class="lede">In dieser Session bekommt deine Anwendung ein Gedächtnis. Wir bauen eine Kontakte-Datenbank mit Supabase, die Grundlage für dein eigenes CRM.</p>
+  <div class="meta">Online · 2 Stunden · Marcus Kunkel</div>
+</div>
+
+<div class="frame">
+  <h3>Erst lesen, dann loslegen</h3>
+  <p>Das hier ist kein Wettbewerb. Die <strong>Basis</strong> ist das vollständige Lernziel dieser Session. Wer nur die Basis schafft, hat alles erreicht, worum es geht, und geht mit einer funktionierenden Anwendung nach Hause.</p>
+  <p>Plus und Kür sind für alle, die schneller fertig sind und nicht warten wollen. Sie sind aufklappbar, damit sie niemanden ablenken. Es ist ausdrücklich in Ordnung, sie nie zu öffnen.</p>
+  <ul class="levels">
+    <li><span class="tier">+</span><span><b>Basis</b> — machen wir gemeinsam. Immer sichtbar, nie eingeklappt.</span></li>
+    <li><span class="tier">++</span><span><b>Plus</b> — vertieft den aktuellen Schritt. Für die Wartezeit.</span></li>
+    <li><span class="tier">+++</span><span><b>Kür</b> — für alle, die deutlich vorne sind.</span></li>
+  </ul>
+</div>
+
+<div class="frame">
+  <h3>Wo läuft eigentlich was</h3>
+  <p>Die Frage kommt immer, deshalb vorweg. Es sind zwei getrennte Orte:</p>
+  <ul class="plus">
+    <li><b>Supabase</b> liegt in der Cloud. Dort wohnen die Tabelle und die Daten. Du erreichst es nur über den Browser.</li>
+    <li><b>Deine Anwendung</b> läuft auf deinem Rechner, unter einer Adresse wie <code class="inline">localhost:5173</code>. Nur du siehst sie.</li>
+  </ul>
+  <p>Verbunden werden beide über zwei Werte in einer Datei namens <code class="inline">.env</code>. Genau diese zwei Werte tauschen wir später einmal aus, und dann passiert etwas Interessantes.</p>
+</div>
+
+</div>
+
+<div class="wrap">
+<div class="sep"><span>+</span> + <span>+</span></div>
+</div>
+
+<!-- ============ VORAB ============ -->
+<section id="vorab">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">00</div>
+    <h2>Vorab, bitte vor der Session</h2>
+  </div>
+  <p class="duration">ca. 15 Minuten · einmalig</p>
+
+  <p>Diese vier Punkte kosten dich vorher eine Viertelstunde und in der Session sonst eine Stunde. Wenn etwas klemmt, melde dich rechtzeitig.</p>
+
+  <h3>1 · Node prüfen</h3>
+  <p>Öffne ein Terminal und tippe:</p>
+  <div class="code">
+    <button class="copy" data-copy="node -v">Kopieren</button>
+    <pre>node -v</pre>
+  </div>
+  <p>Erscheint eine Versionsnummer wie <code class="inline">v22.14.0</code>, ist alles da. Erscheint „command not found" oder ähnliches, lade Node von <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a> und installiere die LTS-Version. Das ist ein normaler Installer zum Durchklicken, kein Terminal nötig.</p>
+  <div class="warn"><b>Wahrscheinlich hast du Node schon.</b> Claude Code läuft selbst darauf. Wer Claude Code benutzt, ist an dieser Stelle fertig.</div>
+
+  <h3>2 · Supabase-Konto anlegen</h3>
+  <p>Auf <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> registrieren. Kostenlos, Anmeldung über GitHub geht am schnellsten. Noch kein Projekt anlegen, das machen wir gemeinsam.</p>
+
+  <h3>3 · Claude Code startklar</h3>
+  <p>Claude Code muss laufen, und du solltest dich einmal eingeloggt haben. Wenn du seit der letzten Session nichts gemacht hast, kurz öffnen und prüfen.</p>
+
+  <h3>4 · Linear-Konto</h3>
+  <p>Auf <a href="https://linear.app" target="_blank" rel="noopener">linear.app</a> registrieren, falls noch nicht geschehen. Wir nutzen es in der Session als Backlog für dein CRM.</p>
+
+  <div class="warn">
+    <b>Ein Hinweis zur Ehrlichkeit:</b> Wenn du an diesen vier Punkten scheiterst, ist das kein Problem und kein Grund fernzubleiben. Komm trotzdem, schau zu, und arbeite die Seite hinterher in Ruhe durch. Sie bleibt stehen.
+  </div>
+</div>
+</section>
+
+<!-- ============ SCHRITT 01 ============ -->
+<section id="projekt">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">01</div>
+    <h2>Das Projekt anlegen</h2>
+  </div>
+  <p class="duration">ca. 10 Minuten</p>
+
+  <p>Wir starten mit einem frischen Projekt, nicht mit deiner bestehenden App. Zwei Wege führen zum selben Ergebnis, such dir einen aus.</p>
+
+  <h3>Weg A · Über das Terminal</h3>
+  <div class="code">
+    <button class="copy" data-copy="npm create vite@latest mein-crm -- --template react">Kopieren</button>
+    <pre>npm create vite@latest mein-crm -- --template react</pre>
+  </div>
+  <p>Danach in den neuen Ordner wechseln, Abhängigkeiten laden und starten:</p>
+  <div class="code">
+    <button class="copy" data-copy="cd mein-crm
+npm install
+npm run dev">Kopieren</button>
+    <pre>cd mein-crm
+npm install
+npm run dev</pre>
+  </div>
+
+  <h3>Weg B · Über Claude Code</h3>
+  <p>Ordner anlegen, Claude Code darin starten und beauftragen:</p>
+  <div class="code">
+    <button class="copy" data-copy="Erstelle hier ein neues Vite-Projekt mit React für eine Kontaktverwaltung. Starte danach den Entwicklungsserver und sag mir, unter welcher Adresse ich die Seite sehe.">Kopieren</button>
+    <pre>Erstelle hier ein neues Vite-Projekt mit React für eine
+Kontaktverwaltung. Starte danach den Entwicklungsserver und
+sag mir, unter welcher Adresse ich die Seite sehe.</pre>
+  </div>
+
+  <p>Im Terminal steht anschließend eine Adresse, meist <code class="inline">http://localhost:5173</code>. Öffne sie im Browser. Du siehst die Startseite von Vite. Das ist deine Anwendung, und ab jetzt bauen wir sie um.</p>
+
+  <div class="warn"><b>Terminal offen lassen.</b> Solange dort <code class="inline">npm run dev</code> läuft, läuft deine Seite. Schließt du das Fenster, ist die Seite weg. Für alle weiteren Befehle öffnest du ein zweites Terminal.</div>
+
+  <div class="linear">
+    <b>Linear</b>
+    Lege jetzt ein Projekt „Mein CRM" an und trage fünf Issues ein, eines pro Schritt dieser Seite. Wenn du magst, zusätzlich die Plus- und Kür-Aufgaben als eigene Issues. Am Ende der Session hast du damit einen echten Backlog, an dem du weiterarbeiten kannst.
+  </div>
+</div>
+</section>
+
+<!-- ============ SCHRITT 02 ============ -->
+<section id="tabelle">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">02</div>
+    <h2>Die Tabelle anlegen</h2>
+  </div>
+  <p class="duration">ca. 15 Minuten</p>
+
+  <p>Jetzt zum zweiten Ort. In Supabase auf <b>New project</b>, einen Namen vergeben, ein Datenbank-Passwort setzen und als Region <b>Frankfurt</b> wählen. Das Passwort brauchst du heute nicht, notiere es trotzdem. Die Einrichtung dauert etwa eine Minute.</p>
+
+  <p>Danach links im Menü den <b>SQL Editor</b> öffnen, folgendes einfügen und ausführen:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="create table kontakte (
+  id         uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  name       text not null,
+  firma      text,
+  rolle      text,
+  kontakt    text,
+  notiz      text
+);
+
+alter table kontakte enable row level security;
+
+create policy &quot;lesen&quot;    on kontakte for select using (true);
+create policy &quot;anlegen&quot;  on kontakte for insert with check (true);
+create policy &quot;aendern&quot;  on kontakte for update using (true);
+create policy &quot;loeschen&quot; on kontakte for delete using (true);">Kopieren</button>
+<pre><span class="k">create table</span> kontakte (
+  id         uuid <span class="k">primary key</span> <span class="k">default</span> gen_random_uuid(),
+  created_at timestamptz <span class="k">default</span> now(),
+  name       text <span class="k">not null</span>,
+  firma      text,
+  rolle      text,
+  kontakt    text,
+  notiz      text
+);
+
+<span class="k">alter table</span> kontakte <span class="k">enable row level security</span>;
+
+<span class="k">create policy</span> "lesen"    <span class="k">on</span> kontakte <span class="k">for select using</span> (true);
+<span class="k">create policy</span> "anlegen"  <span class="k">on</span> kontakte <span class="k">for insert with check</span> (true);
+<span class="k">create policy</span> "aendern"  <span class="k">on</span> kontakte <span class="k">for update using</span> (true);
+<span class="k">create policy</span> "loeschen" <span class="k">on</span> kontakte <span class="k">for delete using</span> (true);</pre>
+  </div>
+
+  <p>Der obere Teil legt die Tabelle an. Der untere Teil regelt, wer was darf: lesen, anlegen, ändern, löschen. In deinem eigenen Projekt darfst du alles. Merk dir diese vier Zeilen, sie werden später wichtig.</p>
+
+  <p>Wechsle nun in den <b>Table Editor</b>. Deine Tabelle ist da, leer. Über <b>Insert row</b> trägst du zwei Kontakte von Hand ein. Die Felder <code class="inline">id</code> und <code class="inline">created_at</code> lässt du frei, die füllt die Datenbank selbst.</p>
+
+  <div class="warn"><b>Das ist bereits ein Formular.</b> Du hast gerade Daten gespeichert, ohne eine Zeile Code. Die Daten existieren jetzt unabhängig von jeder Anwendung. Genau das ist der Unterschied zu allem, was du bisher gebaut hast.</div>
+
+  <details>
+    <summary><span class="sig">++</span> Plus <span class="hint">Was bewirkt „not null"?</span></summary>
+    <div class="details-body">
+      <p>Versuche im Table Editor eine Zeile zu speichern, bei der du <code class="inline">name</code> leer lässt. Die Datenbank verweigert das und zeigt eine Fehlermeldung.</p>
+      <p>Das ist die Wirkung von <code class="inline">not null</code>: Die Regel steht in der Datenbank, nicht in deiner Anwendung. Auch wenn dein Formular später schlampig ist, kommt kein namenloser Kontakt durch. Alle anderen Felder dürfen leer bleiben.</p>
+      <p>Lies die Fehlermeldung einmal in Ruhe. Genau diese Meldung wirst du später in deiner Anwendung wiedersehen.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Selbst abfragen</span></summary>
+    <div class="details-body">
+      <p>Zurück in den SQL Editor. Hier fragst du Daten ab, statt Tabellen zu bauen. Probiere:</p>
+      <div class="code">
+        <button class="copy" data-copy="select name, firma, rolle
+from kontakte
+order by created_at desc;">Kopieren</button>
+<pre><span class="k">select</span> name, firma, rolle
+<span class="k">from</span> kontakte
+<span class="k">order by</span> created_at <span class="k">desc</span>;</pre>
+      </div>
+      <p>Dann eine Einschränkung dazu:</p>
+      <div class="code">
+        <button class="copy" data-copy="select * from kontakte
+where firma = 'Musterfirma GmbH';">Kopieren</button>
+<pre><span class="k">select</span> * <span class="k">from</span> kontakte
+<span class="k">where</span> firma = 'Musterfirma GmbH';</pre>
+      </div>
+      <p>Abfragen verändern nichts, du kannst hier nichts kaputtmachen. Und du siehst gleich wieder, was du hier tippst: Claude Code baut in Schritt 03 genau solche Abfragen in deine Anwendung ein.</p>
+    </div>
+  </details>
+</div>
+</section>
+
+<!-- ============ SCHRITT 03 ============ -->
+<section id="anzeigen">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">03</div>
+    <h2>Verbinden und anzeigen</h2>
+  </div>
+  <p class="duration">ca. 25 Minuten</p>
+
+  <p>Jetzt bauen wir die Brücke zwischen deinem Rechner und der Cloud. Dafür brauchst du zwei Werte aus Supabase.</p>
+
+  <h3>Die zwei Werte holen</h3>
+  <p>In Supabase auf <b>Project Settings</b>, dort <b>API</b>. Du findest:</p>
+  <ul class="plus">
+    <li><b>Project URL</b> — sieht aus wie <code class="inline">https://abcdefgh.supabase.co</code></li>
+    <li><b>anon public</b> — ein sehr langer Schlüssel, beginnt meist mit <code class="inline">eyJ</code></li>
+  </ul>
+
+  <div class="warn">
+    <b>Finger weg vom service_role key.</b> Der steht auf derselben Seite und umgeht alle Schutzregeln. Er gehört niemals in deine Anwendung und niemals in einen Chat. Wir brauchen ausschließlich den <b>anon</b>-Schlüssel.
+  </div>
+
+  <h3>Die .env anlegen</h3>
+  <p>Im Hauptordner deines Projekts, dort wo auch die <code class="inline">package.json</code> liegt, legst du eine Datei namens <code class="inline">.env</code> an. Der Punkt am Anfang gehört dazu, der Dateiname besteht nur daraus.</p>
+
+  <div class="code">
+    <button class="copy" data-copy="VITE_SUPABASE_URL=https://DEINPROJEKT.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...">Kopieren</button>
+<pre>VITE_SUPABASE_URL=https://DEINPROJEKT.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...</pre>
+  </div>
+
+  <p>Beide Platzhalter durch deine echten Werte ersetzen. Keine Anführungszeichen, keine Leerzeichen um das Gleichheitszeichen.</p>
+
+  <h3>Die Anwendung bauen lassen</h3>
+  <p>Jetzt übernimmt Claude Code. Beauftrage es mit dem vollständigen Kontext, also mit deinem Tabellenaufbau:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Ich habe eine Supabase-Datenbank mit einer Tabelle 'kontakte'.
+Spalten: id (uuid), created_at (timestamptz), name (text, pflicht),
+firma (text), rolle (text), kontakt (text), notiz (text).
+
+Die Zugangsdaten stehen in der .env als VITE_SUPABASE_URL und
+VITE_SUPABASE_ANON_KEY.
+
+Installiere den Supabase-Client, verbinde die Anwendung und zeige
+mir alle Kontakte als Liste an. Erklaere mir kurz, was du gemacht
+hast und in welcher Datei die Verbindung steht.">Kopieren</button>
+<pre>Ich habe eine Supabase-Datenbank mit einer Tabelle 'kontakte'.
+Spalten: id (uuid), created_at (timestamptz), name (text, pflicht),
+firma (text), rolle (text), kontakt (text), notiz (text).
+
+Die Zugangsdaten stehen in der .env als VITE_SUPABASE_URL und
+VITE_SUPABASE_ANON_KEY.
+
+Installiere den Supabase-Client, verbinde die Anwendung und zeige
+mir alle Kontakte als Liste an. Erklaere mir kurz, was du gemacht
+hast und in welcher Datei die Verbindung steht.</pre>
+  </div>
+
+  <p>Der letzte Satz ist kein Beiwerk. Lass dir erklären, was passiert ist, sonst hast du am Ende eine Anwendung, die funktioniert, und keine Ahnung warum.</p>
+
+  <p>Im Browser stehen jetzt die zwei Kontakte, die du vorhin von Hand eingetragen hast. Sie kommen nicht aus deinem Code, sie kommen aus Frankfurt.</p>
+
+  <div class="warn"><b>Wenn nichts erscheint:</b> Terminal anschauen. Nach dem Anlegen der <code class="inline">.env</code> muss der Entwicklungsserver einmal neu gestartet werden. Strg+C drückt ihn ab, <code class="inline">npm run dev</code> startet ihn wieder. Warum das so ist, klären wir in Schritt 05.</div>
+
+  <details>
+    <summary><span class="sig">++</span> Plus <span class="hint">Sortieren und zählen</span></summary>
+    <div class="details-body">
+      <p>Beauftrage Claude Code:</p>
+      <div class="code">
+        <button class="copy" data-copy="Sortiere die Kontaktliste nach created_at absteigend, sodass die neuesten oben stehen. Zeige ausserdem ueber der Liste an, wie viele Kontakte es insgesamt sind.">Kopieren</button>
+<pre>Sortiere die Kontaktliste nach created_at absteigend, sodass
+die neuesten oben stehen. Zeige ausserdem ueber der Liste an,
+wie viele Kontakte es insgesamt sind.</pre>
+      </div>
+      <p>Schau dir danach im Code an, wo die Sortierung steht. Du findest dort ein <code class="inline">.order(...)</code>, das dem <code class="inline">order by</code> aus dem SQL Editor entspricht. Der Zähler ist der interessantere Teil, ihn brauchst du gleich beim Umschalten.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Leerzustand und Ladezustand</span></summary>
+    <div class="details-body">
+      <p>Eine leere weiße Fläche ist die schlechteste Antwort, die eine Anwendung geben kann. Der Nutzer weiß nicht, ob sie lädt, leer ist oder kaputt.</p>
+      <div class="code">
+        <button class="copy" data-copy="Behandle zwei Faelle sauber: Waehrend die Daten geladen werden, zeige einen Ladehinweis. Wenn keine Kontakte vorhanden sind, zeige stattdessen den Hinweis 'Noch keine Kontakte. Trag deinen ersten ein.' Zeige ausserdem eine verstaendliche Meldung an, falls die Datenbank einen Fehler zurueckgibt.">Kopieren</button>
+<pre>Behandle zwei Faelle sauber: Waehrend die Daten geladen werden,
+zeige einen Ladehinweis. Wenn keine Kontakte vorhanden sind,
+zeige stattdessen den Hinweis 'Noch keine Kontakte. Trag deinen
+ersten ein.' Zeige ausserdem eine verstaendliche Meldung an,
+falls die Datenbank einen Fehler zurueckgibt.</pre>
+      </div>
+      <p>Diese Arbeit zahlt sich in Schritt 05 aus. Du wirst dann als Einziger sofort sehen, was passiert ist.</p>
+    </div>
+  </details>
+
+  <div class="linear">
+    <b>Linear</b>
+    Issue für diesen Schritt auf Done ziehen. Zehn Sekunden, und du siehst deinen Fortschritt.
+  </div>
+</div>
+</section>
+
+<!-- ============ SCHRITT 04 ============ -->
+<section id="formular">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">04</div>
+    <h2>Kontakte eintragen</h2>
+  </div>
+  <p class="duration">ca. 20 Minuten</p>
+
+  <p>Lesen kann deine Anwendung. Jetzt soll sie auch schreiben.</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Baue ueber der Liste ein Formular mit Feldern fuer name, firma, rolle, kontakt und notiz. Beim Absenden wird ein neuer Eintrag in der Tabelle kontakte angelegt und die Liste aktualisiert sich, ohne dass ich die Seite neu laden muss.">Kopieren</button>
+<pre>Baue ueber der Liste ein Formular mit Feldern fuer name, firma,
+rolle, kontakt und notiz. Beim Absenden wird ein neuer Eintrag
+in der Tabelle kontakte angelegt und die Liste aktualisiert sich,
+ohne dass ich die Seite neu laden muss.</pre>
+  </div>
+
+  <p>Trag einen echten Kontakt ein. Dann schau in Supabase in den Table Editor: Die Zeile steht dort. Dein Formular und der Table Editor schreiben in dieselbe Tabelle, sie sind nur zwei verschiedene Türen zum selben Raum.</p>
+
+  <details>
+    <summary><span class="sig">++</span> Plus <span class="hint">Formular aufräumen</span></summary>
+    <div class="details-body">
+      <div class="code">
+        <button class="copy" data-copy="Leere das Formular nach dem erfolgreichen Absenden. Wenn das Feld name leer ist, sende gar nicht erst ab, sondern zeige einen Hinweis direkt am Feld. Zeige nach erfolgreichem Speichern kurz eine Bestaetigung.">Kopieren</button>
+<pre>Leere das Formular nach dem erfolgreichen Absenden. Wenn das
+Feld name leer ist, sende gar nicht erst ab, sondern zeige einen
+Hinweis direkt am Feld. Zeige nach erfolgreichem Speichern kurz
+eine Bestaetigung.</pre>
+      </div>
+      <p>Beachte: Die Regel für den Pflichtnamen steht jetzt an zwei Stellen, in deinem Formular und in der Datenbank. Das ist kein Fehler, sondern richtig so. Das Formular ist die Höflichkeit, die Datenbank ist die Sicherheit.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Einträge löschen</span></summary>
+    <div class="details-body">
+      <div class="code">
+        <button class="copy" data-copy="Ergaenze bei jedem Kontakt in der Liste einen Loeschen-Knopf. Ein Klick entfernt den Eintrag aus der Datenbank und aus der Liste. Frage vorher einmal nach, ob ich sicher bin.">Kopieren</button>
+<pre>Ergaenze bei jedem Kontakt in der Liste einen Loeschen-Knopf.
+Ein Klick entfernt den Eintrag aus der Datenbank und aus der
+Liste. Frage vorher einmal nach, ob ich sicher bin.</pre>
+      </div>
+      <p>Diese Aufgabe hat einen Hintergedanken. Behalte den Löschen-Knopf im Kopf, im nächsten Schritt wird er sich seltsam verhalten.</p>
+    </div>
+  </details>
+
+  <div class="linear">
+    <b>Linear</b>
+    Issue auf Done. Danach sammeln wir uns alle wieder, unabhängig davon, wo du stehst.
+  </div>
+</div>
+</section>
+
+<!-- ============ SCHRITT 05 ============ -->
+<section id="twist">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">05</div>
+    <h2>Der Abstecher</h2>
+  </div>
+  <p class="duration">ca. 15 Minuten · alle gemeinsam</p>
+
+  <div class="warn"><b>Hier gibt es kein Plus und keine Kür.</b> Wir machen das alle gleichzeitig, weil es nur gemeinsam funktioniert.</div>
+
+  <p>Für diese Session existiert eine zweite Datenbank: das <b>Verzeichnis der Masterclass</b>. Sie hat exakt denselben Aufbau wie deine, dieselben sieben Spalten. Wir lassen deine Anwendung jetzt einmal darauf zeigen.</p>
+
+  <h3>1 · Zweiten Block in die .env</h3>
+  <p>Öffne deine <code class="inline">.env</code> und hänge unten an:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="# Verzeichnis der Masterclass
+#VITE_SUPABASE_URL=PLATZHALTER_VERZEICHNIS_URL
+#VITE_SUPABASE_ANON_KEY=PLATZHALTER_VERZEICHNIS_KEY">Kopieren</button>
+<pre><span class="c"># Verzeichnis der Masterclass</span>
+<span class="c">#VITE_SUPABASE_URL=PLATZHALTER_VERZEICHNIS_URL</span>
+<span class="c">#VITE_SUPABASE_ANON_KEY=PLATZHALTER_VERZEICHNIS_KEY</span></pre>
+  </div>
+
+  <p>Das Rautezeichen macht eine Zeile unwirksam. Die Datei enthält jetzt vier Zeilen, von denen zwei gelten und zwei schlafen.</p>
+
+  <h3>2 · Umschalten</h3>
+  <p>Setze vor deine beiden oberen Zeilen je ein <code class="inline">#</code> und entferne es bei den unteren beiden. Danach sieht die Datei so aus:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="#VITE_SUPABASE_URL=https://DEINPROJEKT.supabase.co
+#VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...
+
+# Verzeichnis der Masterclass
+VITE_SUPABASE_URL=PLATZHALTER_VERZEICHNIS_URL
+VITE_SUPABASE_ANON_KEY=PLATZHALTER_VERZEICHNIS_KEY">Kopieren</button>
+<pre><span class="c">#VITE_SUPABASE_URL=https://DEINPROJEKT.supabase.co</span>
+<span class="c">#VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...</span>
+
+<span class="c"># Verzeichnis der Masterclass</span>
+VITE_SUPABASE_URL=PLATZHALTER_VERZEICHNIS_URL
+VITE_SUPABASE_ANON_KEY=PLATZHALTER_VERZEICHNIS_KEY</pre>
+  </div>
+
+  <h3>3 · Neu starten, nicht nur speichern</h3>
+  <p>Ins Terminal wechseln, <b>Strg+C</b> drücken, dann:</p>
+  <div class="code">
+    <button class="copy" data-copy="npm run dev">Kopieren</button>
+    <pre>npm run dev</pre>
+  </div>
+  <p>Speichern allein reicht hier nicht. Vite liest die <code class="inline">.env</code> nur beim Start und backt die Werte fest in die Anwendung ein. Änderst du sie im laufenden Betrieb, passiert nichts.</p>
+
+  <h3>4 · Ansehen</h3>
+  <p>Seite neu laden. Deine Kontakte sind verschwunden, stattdessen steht dort das Verzeichnis der Gruppe.</p>
+  <p>Dein Code hat sich nicht geändert. Deine Anwendung hat sich nicht geändert. Du hast zwei Zeilen in einer Textdatei getauscht.</p>
+
+  <h3>5 · Selbst eintragen</h3>
+  <p>Trag dich über dein eigenes Formular ins Verzeichnis ein. Erfundene Daten sind ausdrücklich erlaubt und erwünscht. Dann warte einen Moment und lade neu: Du siehst die Einträge der anderen erscheinen.</p>
+
+  <div class="warn">
+    <b>Bitte keine echten Daten Dritter.</b> Diese Datenbank ist offen, jeder in der Runde kann alles darin lesen. Sie wird nach der Session gelöscht. Trag nur ein, was öffentlich sein darf.
+  </div>
+
+  <h3>6 · Der Löschen-Knopf</h3>
+  <p>Wer in der Kür einen Löschen-Knopf gebaut hat, probiert ihn jetzt aus. Es passiert nichts. Kein Fehler, keine Meldung, der Eintrag bleibt stehen.</p>
+  <p>Das ist kein Bug. Erinnerst du dich an die vier Regeln aus Schritt 02? In deiner eigenen Datenbank gibt es alle vier. Im Verzeichnis gibt es nur zwei: lesen und anlegen. Ändern und Löschen wurden nie erlaubt.</p>
+  <p>Gleicher Code, gleiche Anwendung, anderes Rechteprofil. Die Regeln stehen in der Datenbank, nicht in deinem Programm. Deshalb kann auch niemand sie umgehen, indem er deine Anwendung verändert.</p>
+
+  <h3>7 · Zurückschalten</h3>
+  <p>Rautezeichen wieder tauschen, oben weg, unten hin. Terminal: Strg+C, <code class="inline">npm run dev</code>. Deine eigenen Kontakte sind zurück.</p>
+</div>
+</section>
+
+<!-- ============ SCHRITT 06 ============ -->
+<section id="ausbau">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">06</div>
+    <h2>Zurück zu deinem CRM</h2>
+  </div>
+  <p class="duration">ca. 15 Minuten</p>
+
+  <p>Der Abstecher ist vorbei, ab jetzt geht es wieder nur um deine Anwendung. Sie kann Kontakte anzeigen und anlegen. Das ist die Basis, und damit ist das Lernziel dieser Session erreicht.</p>
+
+  <p>Was jetzt kommt, ist Ausbau. Nimm dir, was dich interessiert.</p>
+
+  <details>
+    <summary><span class="sig">++</span> Plus <span class="hint">Suchen</span></summary>
+    <div class="details-body">
+      <div class="code">
+        <button class="copy" data-copy="Baue ueber der Liste ein Suchfeld. Waehrend ich tippe, wird die Liste auf Kontakte eingeschraenkt, deren Name oder Firma den Suchbegriff enthaelt. Gross- und Kleinschreibung soll dabei egal sein.">Kopieren</button>
+<pre>Baue ueber der Liste ein Suchfeld. Waehrend ich tippe, wird die
+Liste auf Kontakte eingeschraenkt, deren Name oder Firma den
+Suchbegriff enthaelt. Gross- und Kleinschreibung soll dabei egal
+sein.</pre>
+      </div>
+      <p>Frag Claude Code anschließend, ob die Suche in der Datenbank oder im Browser stattfindet. Beides ist möglich, und der Unterschied wird wichtig, sobald du dreitausend Kontakte hast.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Bearbeiten und filtern</span></summary>
+    <div class="details-body">
+      <div class="code">
+        <button class="copy" data-copy="Mache die Kontakte bearbeitbar: Ein Klick auf einen Eintrag oeffnet die Felder zum Aendern, Speichern schreibt die Aenderung in die Datenbank zurueck. Ergaenze ausserdem eine Filtermoeglichkeit nach dem Feld rolle.">Kopieren</button>
+<pre>Mache die Kontakte bearbeitbar: Ein Klick auf einen Eintrag
+oeffnet die Felder zum Aendern, Speichern schreibt die Aenderung
+in die Datenbank zurueck. Ergaenze ausserdem eine
+Filtermoeglichkeit nach dem Feld rolle.</pre>
+      </div>
+      <p>Das Bearbeiten funktioniert bei dir, weil du in Schritt 02 die Regel „aendern" angelegt hast. Im Verzeichnis hätte es nicht funktioniert.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Ins Netz stellen mit Coolify</span></summary>
+    <div class="details-body">
+      <p>Deine Anwendung läuft bisher ausschließlich auf deinem Rechner. Niemand sonst kann sie sehen. Zeit, das zu ändern.</p>
+      <p>Der Weg in Kürze: Projekt in ein Git-Repository legen, in Coolify eine neue Anwendung aus diesem Repository anlegen, als Build-Befehl <code class="inline">npm run build</code> und als Ausgabeverzeichnis <code class="inline">dist</code> angeben, Domain zuweisen.</p>
+      <div class="warn">
+        <b>Zwei Fallstricke.</b> Erstens: Die <code class="inline">.env</code> gehört nicht ins Repository. Die beiden Werte trägst du stattdessen in Coolify als Umgebungsvariablen ein. Zweitens: Änderst du sie dort später, reicht kein Neustart, die Anwendung muss neu gebaut werden. Vite backt die Werte beim Bauen ein, genau wie du es vorhin gesehen hast.
+      </div>
+      <p>Wenn du das heute nicht schaffst, ist das der beste denkbare Ausgang: Du hast ein konkretes, gut beschriebenes Issue für deinen Backlog.</p>
+    </div>
+  </details>
+
+  <div class="linear">
+    <b>Linear</b>
+    Der wichtigste Moment für dein Backlog. Was du heute nicht geschafft hast, ist kein Versäumnis, sondern deine Arbeitsliste. Trag ein, was dein CRM noch braucht: Firmen als eigene Tabelle, Kontakthistorie, Export, Anmeldung mit Passwort, Deployment. Damit verlässt du die Session nicht mit einer Übung, sondern mit einem Projekt.
+  </div>
+</div>
+</section>
+
+<!-- ============ DANACH ============ -->
+<section id="danach">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">07</div>
+    <h2>Nach der Session</h2>
+  </div>
+  <p class="duration">in deinem Tempo</p>
+
+  <p>Diese Seite bleibt online. Wenn du in der Session nicht mitgekommen bist oder gar nicht dabei warst, arbeite sie in Ruhe durch. Die Schritte funktionieren einzeln, nur der Abstecher in Schritt 05 braucht die Gruppe.</p>
+
+  <p>Drei Dinge, die du als Nächstes lernen solltest, in dieser Reihenfolge:</p>
+  <ul class="plus">
+    <li><b>Anmeldung.</b> Solange deine Anwendung keine Nutzer kennt, kann sie Daten nicht sinnvoll trennen. Supabase bringt das mit.</li>
+    <li><b>Echte Regeln statt „alles erlaubt".</b> Die vier Zeilen aus Schritt 02 sind Prototyp-Einstellungen. Sobald es echte Daten sind, gehört dort hin: nur der Besitzer darf lesen.</li>
+    <li><b>Eine zweite Tabelle.</b> Firmen getrennt von Kontakten. Damit lernst du Beziehungen, und ab da wird aus der Liste ein CRM.</li>
+  </ul>
+
+  <div class="warn"><b>Und der Satz vom Anfang gilt weiter:</b> Basis reicht. Wer eine funktionierende Kontaktverwaltung mit eigener Datenbank gebaut hat, kann etwas, das er vor dieser Session nicht konnte. Alles Weitere ist Zugabe.</div>
+</div>
+</section>
+
+<footer>
+  <div class="wrap footer-in">
+    <div class="footer-brand"><span class="plus-mark"></span> BERENT</div>
+    <span>KI-Masterclass · berent.ai</span>
+    <div class="footer-links">
+      <a href="https://berent.ai/impressum.html">Impressum</a>
+      <a href="https://berent.ai">← Zurück zur Hauptseite</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+
+</body>
+</html>
