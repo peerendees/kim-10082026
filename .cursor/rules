@@ -1,0 +1,84 @@
+# Projektregeln · KIM-Masterclass Landing Page
+
+## Was dieses Projekt ist
+
+Statische Arbeitsunterlage zur Masterclass-Session „Datenbank-Anbindung mit
+Supabase" (KOERTING Institut). Kein Framework, kein Build, kein Backend.
+Vanilla HTML, CSS und ein kurzes JavaScript für die Kopierbuttons.
+
+Zielgruppe: 70 bis 100 Teilnehmer ohne Programmiererfahrung, die mit Claude
+Code arbeiten. Die Seite wird während der Session live mitgelesen und bleibt
+danach als Nachschlagewerk stehen.
+
+## Sprache und Stil
+
+- Deutsch, Du-Form
+- Kein Gendern
+- Kein Gedankenstrich als Satzverbindung, stattdessen Komma
+- Keine Marketing-Floskeln
+- Verbotene Woerter: eintauchen, entdecken, enthuellen, umarmen
+- „allerdings" statt „aber", „veraltet" statt „altmodisch"
+- Praezise, nuechtern, erklaerend. Die Leser sind Erwachsene ohne Vorwissen,
+  nicht Anfaenger, die man bei der Hand nehmen muss.
+
+## BERENT Corporate Identity
+
+Farben (CSS-Variablen in assets/css/style.css):
+
+```
+--bg      #090806    warmes Dunkelbraun-Schwarz, nie reines Schwarz
+--card    #110e0a
+--border  #2a2118
+--copper  #B5742A    Leitfarbe, Headlines, Akzente
+--gold    #E8C98A    ausschliesslich fuer das Plus-Symbol und Hervorhebungen
+--text    #C4BCB1
+--muted   #7A6A58
+--muted2  #9a8870
+```
+
+Schriften, lokal unter assets/fonts:
+
+- Bebas Neue — Headlines, immer Grossbuchstaben, letter-spacing 0.04em bis 0.1em
+- Lora — Fliesstext, niemals kursiv
+- JetBrains Mono — Code, Labels, technische Angaben
+
+Regeln:
+
+- Niemals #000000 oder #FFFFFF
+- Niemals Inter, Roboto, Arial, system-ui
+- Kein Google Fonts CDN. Schriften bleiben lokal, das ist eine
+  Datenschutzentscheidung und nicht verhandelbar.
+- Das Plus-Symbol ist das Markenelement: Bullets, Trenner, Footer
+- Footer braucht immer Impressum-Link und Zurueck-zur-Hauptseite-Link
+
+## Aufbau der Seite
+
+Sieben Abschnitte, nummeriert 00 bis 06. Die Nummerierung ist echt, die
+Schritte bauen aufeinander auf.
+
+Es gibt kein vorgegebenes Datenbankschema. Jeder Teilnehmer waehlt in
+Schritt 01 seinen eigenen Anwendungsfall. Wo frueher konkrete Tabellen- und
+Spaltennamen standen, stehen Vorlagen mit Platzhaltern oder Prompt-Muster.
+Prompts und SQL bleiben deshalb schemafrei.
+
+Das dreistufige System bleibt:
+
+- Basis — immer sichtbar, wird gemeinsam durchgearbeitet
+- Plus (`++`) — aufklappbar, vertieft den aktuellen Schritt
+- Kuer (`+++`) — aufklappbar, fuer deutlich Schnellere
+
+Plus und Kuer stehen nur dort, wo gebaut wird, aktuell also in Schritt 04.
+Sie duerfen den Zustand nicht verlassen, an dem im naechsten Schritt
+weitergearbeitet wird. Schritt 05 laeuft gemeinsam und hat bewusst weder
+Plus noch Kuer.
+
+## Beim Aendern beachten
+
+- Kopierbuttons: Der zu kopierende Text steht im Attribut `data-copy`. Wird ein
+  Code-Block geaendert, muss `data-copy` mitgeaendert werden. Im `pre` stehen
+  zusaetzlich Syntax-Spans, im `data-copy` niemals.
+- In `data-copy` keine Umlaute verwenden, die Inhalte werden ins Terminal oder
+  in Claude Code eingefuegt.
+- Zeitangaben stehen als Dauer in Minuten, niemals als Uhrzeit.
+- Keine `localStorage`-Nutzung. Die Seite bleibt zustandslos.
+- Keine externen Requests. Alles liegt im Projekt.
