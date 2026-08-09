@@ -75,19 +75,16 @@ Doppelklick greift nur die Rückfallebene.
 
 ## Deployment
 
-**Vollständige Anleitung:** [DEPLOY-RUNBOOK.md](DEPLOY-RUNBOOK.md)
-
-Kurz: Statische Seite auf Hostinger. Öffentlicher Proxy ist `root-traefik-1` im Netz
-`root_default` — nicht Coolifys Standard-Netz allein. Für Demos: Deploy per SSH +
-`docker-compose.yaml` (Pfad A im Runbook).
+| Dokument | Inhalt |
+|----------|--------|
+| [COOLIFY-REPARATUR.md](COOLIFY-REPARATUR.md) | **Coolify dauerhaft reparieren** — Instance Domain, Defaults, Deploy-Checkliste |
+| [DEPLOY-RUNBOOK.md](DEPLOY-RUNBOOK.md) | Notfall-Deploy per SSH, wenn Coolify Save scheitert |
 
 Live-Check:
 
 ```bash
 curl -sI https://kim-10082026.berent.ai | head -3
 ```
-
-Schriften und Assets liegen im Image, kein Request an Drittanbieter (DSGVO).
 
 ---
 
