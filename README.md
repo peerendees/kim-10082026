@@ -73,16 +73,17 @@ Doppelklick greift nur die Rückfallebene.
 
 ## Deployment über Coolify
 
-Statische Seite, keine Build-Schritte, keine Abhängigkeiten. Der beigelegte
-`Dockerfile` liefert die Dateien über nginx aus.
+Statische Seite, keine Build-Schritte, keine Abhängigkeiten. Das Repo enthält
+`docker-compose.yaml` mit explizitem Traefik-Port-Label (Workaround für Coolify-404).
 
-1. Repository auf GitHub anlegen und pushen
-2. In Coolify neue Resource → Application → Public/Private Repository
-3. Build Pack: **Dockerfile**
-4. Port: `80`
-5. Domain: `kim-10082026.berent.ai`
-6. In Cloudflare CNAME `kim-10082026` auf die Coolify-Instanz, Proxy nach
-   bestehender Konvention
+1. In Coolify neue Resource → Private Repository (GitHub App)
+2. Destination: **Standalone Docker (traefik-root-default)** — wie die laufenden
+   BERENT-Seiten, nicht `coolify`
+3. Build Pack: **Docker Compose** · Compose-Datei: `/docker-compose.yaml`
+4. Domain: `https://kim-10082026.berent.ai` · Port Exposes: `80`
+5. **Custom Docker Options leeren** (keine Chrome-/FUSE-Flags von anderen Apps)
+6. Deploy
+7. Cloudflare: A-Record `kim-10082026` → Server-IP, Proxy wie bei `blog`
 
 Die Schriften liegen im Image und werden von derselben Domain ausgeliefert.
 Es gibt keinen einzigen Request an einen Drittanbieter, damit auch keine
