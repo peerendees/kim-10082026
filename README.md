@@ -1,7 +1,7 @@
 # KIM-Masterclass · Landing Page
 
 Arbeitsunterlage zur Masterclass-Session „Datenbank-Anbindung mit Supabase"
-für die KI-Masterclass des KOERTING Instituts.
+für die KI-Masterclass des KOERTING Institute.
 
 Ziel-Subdomain: `kim-10082026.berent.ai`
 
@@ -30,13 +30,9 @@ kim-10082026/
 
 ### 1 · Platzhalter ersetzen
 
-In `index.html`, Abschnitt „Der Abstecher" (Schritt 05), stehen an drei Stellen:
-
-- `PLATZHALTER_VERZEICHNIS_URL`
-- `PLATZHALTER_VERZEICHNIS_KEY`
-
-Beide durch die echten Werte des gemeinsamen Supabase-Projekts ersetzen.
-Es ist der **anon**-Schlüssel aus Project Settings → API, nicht service_role.
+In `index.html`, Abschnitt „Zwei Fenster, eine Wahrheit" (Schritt 05), steht an
+einer Stelle `PLATZHALTER_VERZEICHNIS_URL`. Dort gehört die Adresse der
+Anwendung hin, in die sich alle gemeinsam eintragen.
 
 Prüfen mit:
 
@@ -45,6 +41,23 @@ grep -c PLATZHALTER index.html
 ```
 
 Muss `0` ergeben, sonst scheitert Schritt 05 in der Session für alle gleichzeitig.
+
+### 1b · Vorab-Fassung und Freischaltung
+
+`main` trägt bis zum Sessiontag nur die Vorab-Fassung, also Hero, Rahmen,
+Abschnitt 00 und den Ausblick. Die komplette Seite liegt auf dem Branch
+`vollversion`.
+
+```bash
+# am Sessiontag freischalten
+git checkout main && git merge vollversion && git push
+
+# zu früh freigeschaltet
+git revert -m 1 HEAD && git push
+```
+
+Vorab-Korrekturen auf `main` vor dem Freischalten mit `git merge main` in den
+Branch übernehmen, sonst gehen sie beim Merge verloren.
 
 ### 2 · Schriften und Favicon kopieren
 

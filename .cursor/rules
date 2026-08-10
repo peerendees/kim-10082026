@@ -3,7 +3,7 @@
 ## Was dieses Projekt ist
 
 Statische Arbeitsunterlage zur Masterclass-Session „Datenbank-Anbindung mit
-Supabase" (KOERTING Institut). Kein Framework, kein Build, kein Backend.
+Supabase" (KOERTING Institute). Kein Framework, kein Build, kein Backend.
 Vanilla HTML, CSS und ein kurzes JavaScript für die Kopierbuttons.
 
 Zielgruppe: 70 bis 100 Teilnehmer ohne Programmiererfahrung, die mit Claude
@@ -71,6 +71,22 @@ Plus und Kuer stehen nur dort, wo gebaut wird, aktuell also in Schritt 04.
 Sie duerfen den Zustand nicht verlassen, an dem im naechsten Schritt
 weitergearbeitet wird. Schritt 05 laeuft gemeinsam und hat bewusst weder
 Plus noch Kuer.
+
+## Vorab-Fassung und Freischaltung
+
+Vor dem Sessiontag steht live nur eine Vorab-Fassung: Hero, beide
+Rahmen-Kaesten, Abschnitt 00 und eine Ausblick-Liste der sieben Schritte mit
+Titel und Dauer. Die Abschnitte 01 bis 06 fehlen dort.
+
+- `main` traegt die Vorab-Fassung, sie wird per Auto-Deploy ausgeliefert
+- Branch `vollversion` traegt die komplette Seite
+- Freischalten am Sessiontag: `git checkout main && git merge vollversion && git push`
+- Zurueck: `git revert -m 1 HEAD && git push`
+
+Wird auf `main` vorab noch etwas korrigiert, muss das vor dem Freischalten mit
+`git merge main` in den Branch `vollversion`, sonst faellt die Korrektur beim
+Merge weg. Inhaltliche Arbeit an den Abschnitten 01 bis 06 findet immer auf
+`vollversion` statt.
 
 ## Beim Aendern beachten
 
