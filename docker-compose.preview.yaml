@@ -1,0 +1,23 @@
+# Vorschau-Deploy fuer Branch vollversion.
+# In Coolify als Compose-Datei angeben, nicht die normale docker-compose.yaml.
+# Oeffentliche Adresse bleibt kim-10082026.berent.ai auf main.
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - root_default
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=root_default
+      - traefik.http.routers.kim-vorschau.rule=Host(`kim-vorschau.berent.ai`)
+      - traefik.http.routers.kim-vorschau.entrypoints=websecure
+      - traefik.http.routers.kim-vorschau.tls=true
+      - traefik.http.routers.kim-vorschau.service=kim-vorschau
+      - traefik.http.services.kim-vorschau.loadbalancer.server.port=80
+
+networks:
+  root_default:
+    external: true
