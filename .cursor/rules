@@ -36,6 +36,25 @@ Farben (CSS-Variablen in assets/css/style.css):
 --muted2  #9a8870
 ```
 
+Hellmodus, Palette nach BERENT CI, aktiv ueber `data-theme="light"` am
+html-Element. Dunkel bleibt der Standard, also kein Attribut:
+
+```
+--bg      #F5F2EE    warmes Sand-Beige
+--card    #EDEAE4
+--border  #D1CBBD
+--copper  #9A6320    dunkleres Kupfer fuer Kontrast auf hell
+--gold    #9A6320
+--text    #2E2318    Dunkel-Kupfer, kein neutrales Schwarz
+--muted   #7A6248
+--muted2  #9A8C78
+```
+
+Der Modus-Button sitzt rechts im Header, Sonne im Dunkelmodus, Mond im
+Hellmodus, umgeschaltet per CSS. Ein kurzes Skript im `head` setzt den
+gespeicherten Modus vor dem ersten Rendern, sonst blitzt der dunkle
+Hintergrund auf.
+
 Schriften, lokal unter assets/fonts:
 
 - Bebas Neue — Headlines, immer Grossbuchstaben, letter-spacing 0.04em bis 0.1em
@@ -96,5 +115,6 @@ Merge weg. Inhaltliche Arbeit an den Abschnitten 01 bis 06 findet immer auf
 - In `data-copy` keine Umlaute verwenden, die Inhalte werden ins Terminal oder
   in Claude Code eingefuegt.
 - Zeitangaben stehen als Dauer in Minuten, niemals als Uhrzeit.
-- Keine `localStorage`-Nutzung. Die Seite bleibt zustandslos.
+- `localStorage` nur fuer die Modus-Wahl (Schluessel `theme`). Sonst bleibt die
+  Seite zustandslos, kein Fortschritt und keine Eingaben werden gespeichert.
 - Keine externen Requests. Alles liegt im Projekt.

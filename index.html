@@ -7,15 +7,23 @@
 <meta name="description" content="Arbeitsunterlage zur Masterclass-Session: eine eigene Datenbank mit Supabase, angebunden an den eigenen Anwendungsfall.">
 <link rel="icon" type="image/png" href="/assets/images/favicon-32.png">
 <link rel="stylesheet" href="/assets/css/style.css">
+<script>
+  /* Modus vor dem ersten Rendern setzen, sonst blitzt der dunkle Hintergrund auf. */
+  try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+</script>
 </head>
 <body>
 
 <header>
-  <div class="wrap">
+  <div class="wrap header-in">
     <a class="nav" href="https://berent.ai">
       <span class="plus-mark"></span>
       <span>BERENT.AI — Beratung + Entwicklung</span>
     </a>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Farbschema wechseln" title="Farbschema wechseln">
+      <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+      <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646Z"/></svg>
+    </button>
   </div>
 </header>
 
@@ -74,7 +82,7 @@
   <p>Auf <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> registrieren. Kostenlos, Anmeldung über GitHub geht am schnellsten. Noch kein Projekt anlegen, das machen wir gemeinsam.</p>
 
   <h3>3 · Linear-Konto</h3>
-  <p>Auf <a href="https://linear.app" target="_blank" rel="noopener">linear.app</a> registrieren, falls noch nicht geschehen. Wir nutzen es in der Session als Backlog.</p>
+  <p>Auf <a href="https://linear.app" target="_blank" rel="noopener">linear.app</a> registrieren, falls noch nicht geschehen. Wir nutzen es in der Session als Dokumentation und Arbeitsliste (Backlog).</p>
 
   <h3>4 · Die Sitzung des 27. Juli wiederfinden</h3>
   <p>Suche die Claude-Code-Sitzung heraus, in der wir VPS, Coolify und GitHub eingerichtet haben. Öffne sie einmal und lass sie geöffnet. Wir benötigen daraus gleich ein Dokument.</p>

@@ -1,3 +1,19 @@
+/* Modus-Button. Der gewählte Modus überdauert das Neuladen, alles andere
+   auf dieser Seite bleibt zustandslos. Gesetzt wird er bereits im head. */
+
+document.getElementById('theme-toggle')?.addEventListener('click', function () {
+  var root = document.documentElement;
+  var isLight = root.getAttribute('data-theme') === 'light';
+
+  if (isLight) {
+    root.removeAttribute('data-theme');
+  } else {
+    root.setAttribute('data-theme', 'light');
+  }
+
+  try { localStorage.setItem('theme', isLight ? 'dark' : 'light'); } catch (e) {}
+});
+
 /* Kopierbuttons für alle Code-Blöcke.
    Der zu kopierende Text steht im Attribut data-copy des Buttons. */
 

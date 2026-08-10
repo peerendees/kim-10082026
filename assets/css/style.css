@@ -45,15 +45,30 @@
 /* --- Farben ------------------------------------------------------------- */
 
 :root {
-  --bg:      #090806;
-  --card:    #110e0a;
-  --border:  #2a2118;
-  --copper:  #B5742A;
-  --gold:    #E8C98A;
-  --text:    #C4BCB1;
-  --muted:   #7A6A58;
-  --muted2:  #9a8870;
-  --maxw:    820px;
+  --bg:        #090806;
+  --card:      #110e0a;
+  --border:    #2a2118;
+  --copper:    #B5742A;
+  --gold:      #E8C98A;
+  --text:      #C4BCB1;
+  --muted:     #7A6A58;
+  --muted2:    #9a8870;
+  --header-bg: rgba(9,8,6,.94);
+  --maxw:      820px;
+}
+
+/* Hellmodus, Palette nach BERENT CI. Dunkel bleibt Standard, hell wird
+   ueber data-theme="light" am html-Element aktiviert. */
+[data-theme="light"] {
+  --bg:        #F5F2EE;
+  --card:      #EDEAE4;
+  --border:    #D1CBBD;
+  --copper:    #9A6320;
+  --gold:      #9A6320;
+  --text:      #2E2318;
+  --muted:     #7A6248;
+  --muted2:    #9A8C78;
+  --header-bg: rgba(245,242,238,.94);
 }
 
 /* --- Grundgerüst -------------------------------------------------------- */
@@ -93,8 +108,11 @@ body {
 header {
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 50;
-  background: rgba(9,8,6,.94);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
+}
+.header-in {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
 .nav {
   display: flex; align-items: center; gap: .7rem;
@@ -104,6 +122,25 @@ header {
   color: var(--muted2); text-decoration: none;
 }
 .nav:hover { color: var(--copper); }
+
+/* --- Modus-Button ------------------------------------------------------- */
+
+.theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted2);
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.theme-toggle:hover { border-color: var(--copper); color: var(--gold); }
+.theme-toggle svg { width: 16px; height: 16px; display: block; }
+.theme-toggle .icon-moon { display: none; }
+[data-theme="light"] .theme-toggle .icon-sun  { display: none; }
+[data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 /* --- Hero --------------------------------------------------------------- */
 
