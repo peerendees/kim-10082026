@@ -72,13 +72,13 @@ Regeln:
 
 ## Aufbau der Seite
 
-Sieben Abschnitte, nummeriert 00 bis 06. Die Nummerierung ist echt, die
-Schritte bauen aufeinander auf.
+Vorab-Block ohne Nummer und ohne Zeitangabe, danach sechs Schritte 01 bis 06.
+Zwischen 04 und 05 steht eine Pause, optisch abgesetzt, nicht nummeriert.
 
-Es gibt kein vorgegebenes Datenbankschema. Jeder Teilnehmer waehlt in
-Schritt 01 seinen eigenen Anwendungsfall. Wo frueher konkrete Tabellen- und
-Spaltennamen standen, stehen Vorlagen mit Platzhaltern oder Prompt-Muster.
-Prompts und SQL bleiben deshalb schemafrei.
+Es gibt kein vorgegebenes Datenbankschema. Jeder Teilnehmer schreibt in
+Schritt 01 eine `intent.md`. Wo frueher konkrete Tabellen- und Spaltennamen
+standen, stehen Vorlagen mit Platzhaltern oder Prompt-Muster. Prompts und
+SQL bleiben deshalb schemafrei.
 
 Das dreistufige System bleibt:
 
@@ -86,10 +86,9 @@ Das dreistufige System bleibt:
 - Plus (`++`) — aufklappbar, vertieft den aktuellen Schritt
 - Kuer (`+++`) — aufklappbar, fuer deutlich Schnellere
 
-Plus und Kuer stehen nur dort, wo gebaut wird, aktuell also in Schritt 04.
-Sie duerfen den Zustand nicht verlassen, an dem im naechsten Schritt
-weitergearbeitet wird. Schritt 05 laeuft gemeinsam und hat bewusst weder
-Plus noch Kuer.
+Plus und Kuer stehen nur dort, wo gebaut wird. MCP-Anbindungen gehoeren
+ausschliesslich in die Kuer, nie in den Basis-Pfad. Schritt 05 laeuft
+gemeinsam und hat bewusst weder Plus noch Kuer.
 
 ## Vorab-Fassung und Freischaltung
 

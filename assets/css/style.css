@@ -329,6 +329,35 @@ details[open] summary { color: var(--gold); border-bottom: 1px solid var(--borde
 }
 .warn b { color: var(--gold); }
 
+/* --- Vorab ohne Schrittnummer ------------------------------------------- */
+
+.vorab-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem; color: var(--muted);
+  letter-spacing: .12em; text-transform: uppercase;
+  margin: 0 0 .5rem;
+}
+#vorab h2 {
+  margin-bottom: 1.2rem;
+}
+
+/* --- Pause zwischen den Schritten --------------------------------------- */
+
+.pause {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--muted);
+  padding: 1.6rem 1.8rem;
+  margin: 0;
+}
+.pause h3 {
+  font-family: 'Bebas Neue', sans-serif; font-weight: 400;
+  letter-spacing: .08em; font-size: 1.25rem;
+  color: var(--muted2); margin: 0 0 .7rem;
+}
+.pause .duration { margin-left: 0; color: var(--muted); }
+.pause p:last-child { margin-bottom: 0; }
+
 /* --- Trennelement ------------------------------------------------------- */
 
 .sep {
