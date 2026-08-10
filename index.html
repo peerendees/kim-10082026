@@ -6,7 +6,7 @@
 <title>KI-Masterclass · Datenbank-Anbindung mit Supabase</title>
 <meta name="description" content="Arbeitsunterlage zur Masterclass-Session: eine eigene Datenbank mit Supabase, angebunden an den eigenen Anwendungsfall.">
 <link rel="icon" type="image/png" href="/assets/images/favicon-32.png">
-<link rel="stylesheet" href="/assets/css/style.css?v=20260810b">
+<link rel="stylesheet" href="/assets/css/style.css?v=20260810d">
 <script>
   /* Modus vor dem ersten Rendern setzen, sonst blitzt der dunkle Hintergrund auf. */
   try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
@@ -33,13 +33,15 @@
   <div class="eyebrow">KI-Masterclass · KOERTING Institute</div>
   <h1>Deine Infrastruktur<br>bekommt ein Gedächtnis</h1>
   <p class="lede">Am 27. Juli haben wir deine eigene Infrastruktur aufgebaut, VPS, Coolify, GitHub, und ein Hello World ins Netz gestellt. Heute kommt der Baustein dazu, der aus einer Seite eine Anwendung macht: eine Datenbank. Und Linear als System für alles, was danach noch kommt.</p>
+  <p class="lede">Zu groß gedacht, und am Abend läuft nichts. Nimm etwas Kleines, das dich wirklich betrifft. Ausbauen kannst du ab morgen.</p>
+  <p class="lede">Was heute liegen bleibt, nimmst du als Liste mit.</p>
   <div class="meta">Online · 2 Stunden · Marcus Kunkel</div>
 </div>
 
 <div class="frame">
   <h3>Erst lesen, dann loslegen</h3>
-  <p>Das hier ist kein Wettbewerb. Die <strong>Basis</strong> ist das vollständige Lernziel dieser Session. Wer nur die Basis schafft, hat alles erreicht, worum es geht, und geht mit einer funktionierenden Anwendung nach Hause.</p>
-  <p>Plus und Kür sind für alle, die schneller fertig sind und nicht warten wollen. Sie sind aufklappbar, damit sie niemanden ablenken. Es ist ausdrücklich in Ordnung, sie heute nicht zu öffnen.</p>
+  <p>Dies hier ist kein Wettbewerb. Die <strong>Basis</strong> ist das vollständige Lernziel dieser Session. Wer die Basis schafft, hat alles erreicht, worum es geht, und erhält heute Abend eine funktionierende Anwendung.</p>
+  <p>Plus und Kür sind für alle, die schneller fertig sind. Sie sind aufklappbar, damit sie niemanden ablenken. Es ist ausdrücklich in Ordnung, sie heute nicht zu öffnen.</p>
   <ul class="levels">
     <li><span class="tier">+</span><span><b>Basis</b> — machen wir gemeinsam. Immer sichtbar, nie eingeklappt.</span></li>
     <li><span class="tier">++</span><span><b>Plus</b> — vertieft den aktuellen Schritt. Für die Wartezeit.</span></li>
@@ -51,9 +53,9 @@
   <h3>Wo läuft eigentlich was</h3>
   <p>Die Frage kommt stets, deshalb vorweg. Es sind drei getrennte Orte:</p>
   <ul class="plus">
-    <li><b>Dein Rechner</b> trägt die Anwendung im Bau. Sie läuft unter einer Adresse wie <code class="inline">localhost:5173</code>, und nur du siehst sie.</li>
+    <li><b>Dein Rechner</b> führt die Anwendung lokal. Sie läuft unter einer Adresse wie <code class="inline">localhost:5173</code>, und nur du siehst sie.</li>
     <li><b>Supabase</b> liegt in der Cloud. Dort wohnen die Tabelle und die Daten. Du erreichst es über den Browser.</li>
-    <li><b>Dein VPS mit Coolify</b> trägt die Anwendung im Netz. Dort steht seit dem 27. Juli dein Hello World unter deiner Domain.</li>
+    <li><b>Dein VPS mit Coolify</b> trägt die Anwendung ins Netz. Dort steht seit dem 27. Juli dein Hello World unter einer Domain.</li>
   </ul>
   <p>Rechner und Datenbank werden über zwei Werte in einer Datei namens <code class="inline">.env</code> verbunden. Heute arbeiten wir auf deinem Rechner, der Weg auf den VPS steht am Ende als Ausblick.</p>
 </div>
@@ -67,16 +69,13 @@
 <!-- ============ VORAB ============ -->
 <section id="vorab">
 <div class="wrap">
-  <div class="step-head">
-    <div class="step-num">00</div>
-    <h2>Vorab, bitte vor der Session</h2>
-  </div>
-  <p class="duration">ca. 10 Minuten · einmalig</p>
+  <p class="vorab-label">Vorab · einmalig</p>
+  <h2>Vorab, bitte vor der Session</h2>
 
-  <p>Vier Punkte, zehn Minuten. Wenn etwas klemmt, melde dich rechtzeitig.</p>
+  <div class="warn"><b>Ohne die drei Konten unten funktioniert die Session nicht.</b> Claude Code, Supabase, Linear. Das gilt live und wenn du die Seite später allein durchgehst. Wenn etwas klemmt, melde dich rechtzeitig.</div>
 
   <h3>1 · Claude Code startklar</h3>
-  <p>Claude Code muss laufen, und du solltest dich einmal eingeloggt haben. Prüfe dabei dein Kontingent. Wir arbeiten mit <b>Opus 5 auf Max</b>, und das verbraucht spürbar.</p>
+  <p>Claude Code muss laufen, und du solltest dich einmal eingeloggt haben. Prüfe dabei dein Kontingent. Wir arbeiten mit <b>Opus 5 (falls möglich, stets auf Max)</b>, und das verbraucht spürbar.</p>
 
   <h3>2 · Supabase-Konto anlegen</h3>
   <p>Auf <a href="https://supabase.com" target="_blank" rel="noopener">supabase.com</a> registrieren. Kostenlos, Anmeldung über GitHub geht am schnellsten. Noch kein Projekt anlegen, das machen wir gemeinsam.</p>
@@ -93,22 +92,504 @@
 </div>
 </section>
 
+<!-- ============ SCHRITT 01 ============ -->
+<section id="anwendungsfall">
 <div class="wrap">
-  <div class="frame">
-    <h3>Was am Sessiontag hier steht</h3>
-    <p>Die eigentliche Arbeitsunterlage wird am Tag der Session freigeschaltet, damit du dich vorher auf die vier Punkte oben beschränken kannst. Der Ablauf sieht so aus:</p>
-    <ul class="plus">
-      <li><b>00 · Vorab, bitte vor der Session</b> — ca. 10 Minuten</li>
-      <li><b>01 · Dein Anwendungsfall</b> — ca. 20 Minuten</li>
-      <li><b>02 · Neue Sitzung vorbereiten</b> — ca. 10 Minuten</li>
-      <li><b>03 · Der Startprompt</b> — ca. 10 Minuten</li>
-      <li><b>04 · Die Datenbank entsteht</b> — ca. 30 Minuten</li>
-      <li><b>05 · Zwei Fenster, eine Wahrheit</b> — ca. 10 Minuten</li>
-      <li><b>06 · Rechte, Backlog und was als Nächstes kommt</b> — ca. 15 Minuten</li>
-    </ul>
-    <p>Diese Seite bleibt auch nach der Session stehen. Du kannst alles in deinem Tempo nacharbeiten.</p>
+  <div class="step-head">
+    <div class="step-num">01</div>
+    <h2>Dein Anwendungsfall</h2>
+  </div>
+  <p class="duration">ca. 17 Minuten</p>
+
+  <p>Nicht jede Anwendung braucht eine Datenbank. Sie braucht eine, sobald Daten länger leben sollen als ein Seitenaufruf, oder sobald mehr als eine Person darauf zugreift. Beides trifft auf das zu, was du heute baust.</p>
+
+  <p>Es gibt kein vorgegebenes Thema. Du wählst jetzt, woran du die nächsten zwei Stunden arbeitest.</p>
+
+  <details class="impulse">
+    <summary>Impulse <span class="hint">falls du noch unentschlossen bist</span></summary>
+    <div class="details-body">
+      <ul class="plus">
+        <li>Kontakt- und Netzwerkverwaltung</li>
+        <li>Angebots- und Leistungskatalog</li>
+        <li>Feedback- oder Anmeldeformular mit Auswertung</li>
+        <li>Wissenssammlung, etwa Prompts, Quellen, Notizen</li>
+        <li>Projekt- oder Auftragsübersicht</li>
+        <li>Matching zwischen Anbietern und Anfragen</li>
+        <li>Terminanfragen</li>
+      </ul>
+      <p>Diese Liste ist Inspiration, keine Auswahl. Wer etwas Eigenes hat, nimmt das.</p>
+    </div>
+  </details>
+
+  <h3>Kriterien für einen Anwendungsfall, der in zwei Stunden trägt</h3>
+  <ul class="plus">
+    <li><b>Eine Sorte Dinge, nicht drei.</b> Kontakte oder Angebote, nicht Kontakte und Firmen und Aufträge.</li>
+    <li><b>Fünf bis sieben Felder</b>, mehr nicht.</li>
+    <li><b>Anlegen und als Tabelle anzeigen</b> reicht als Funktionsumfang.</li>
+    <li><b>Keine Anmeldung, keine Datei-Uploads, keine Zahlungen, keine KI-Suche.</b> Das sind alles eigene Baustellen.</li>
+  </ul>
+
+  <div class="warn"><b>Der Anwendungsfall darf klein sein … und echt.</b> Ausbauen kannst du ab morgen.</div>
+
+  <h3>Deine Vorlage als intent.md</h3>
+  <p>Der Engpass beim Bauen mit KI ist nicht das Werkzeug. Es ist, wie genau du sagen kannst, was du willst. Wer den Intent aufschreibt, statt ihn zu tippen, kann ihn überarbeiten. Und die Datei trägt beim nächsten Projekt genauso.</p>
+  <p>Öffne dafür einen leeren Texteditor. Noch kein anderes Werkzeug. Speichere die Datei als <code class="inline">intent.md</code>. Später liegt sie neben <code class="inline">architektur.md</code> im Projektordner. In Schritt 03 kommt ihr Inhalt in den Startprompt.</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Ich moechte [WAS] verwalten.
+Die wichtigsten Angaben: [FELD 1], [FELD 2], [FELD 3], ...
+Anlegen und als Tabelle anzeigen reicht als Umfang.
+Das Ziel: [was es dir nutzt]">Kopieren</button>
+<pre>Ich moechte [WAS] verwalten.
+Die wichtigsten Angaben: [FELD 1], [FELD 2], [FELD 3], ...
+Anlegen und als Tabelle anzeigen reicht als Umfang.
+Das Ziel: [was es dir nutzt]</pre>
+  </div>
+
+  <h3>Ausgefüllte Blaupause</h3>
+  <p>Unentschlossen? Nimm dieses Beispiel eins zu eins. Es wird die ganze Seite hindurch weitergeführt, mit fertigem SQL in Schritt 04.</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Ich moechte meine beruflichen Kontakte verwalten.
+Die wichtigsten Angaben: Vorname, Nachname, Firma, E-Mail, Telefon, Notiz.
+Anlegen und als Tabelle anzeigen reicht als Umfang.
+Das Ziel: Ich sehe auf einen Blick, wen ich kenne und worueber wir gesprochen haben.">Kopieren</button>
+<pre>Ich moechte meine beruflichen Kontakte verwalten.
+Die wichtigsten Angaben: Vorname, Nachname, Firma, E-Mail, Telefon, Notiz.
+Anlegen und als Tabelle anzeigen reicht als Umfang.
+Das Ziel: Ich sehe auf einen Blick, wen ich kenne und worueber wir
+gesprochen haben.</pre>
+  </div>
+
+  <h3>Linear · zwei Issues</h3>
+  <p class="duration flush">ca. 5 Minuten</p>
+  <p>Der Intent steht. Jetzt das erste Werkzeug.</p>
+  <p>Leg ein Projekt an, benannt nach dem WAS aus deiner <code class="inline">intent.md</code>. Ein Wort oder zwei, kein Satz. Kein neues Team: Linear hat bei der Registrierung schon Workspace und Team angelegt. Der Name, den du dort vergeben hast, bestimmt Team und Kürzel. Wer das Kürzel ändern will, findet es in den Team-Einstellungen unter General, muss es aber nicht. Issue-Nummern vergibt Linear selbst, von KÜRZEL-1 aufsteigend. Du tippst nie eine Nummer. Im kostenlosen Plan sind zwei Teams möglich, Projekte unbegrenzt. Der Anwendungsfall wird als Projekt in diesem Team angelegt.</p>
+
+  <p>Genau zwei Issues:</p>
+  <ul class="plus">
+    <li><b>Intent steht</b> — sofort auf Done</li>
+    <li><b>Das Ziel aus intent.md</b>, in eigenen Worten, etwa „Anwendung erfasst Kontakte und zeigt sie als Tabelle" — bleibt offen bis Schritt 06</li>
+  </ul>
+
+  <p>Ein erledigter Eintrag und ein offener. Mehr braucht ein Backlog nicht, um verständlich zu sein.</p>
+
+  <div class="linear">
+    <b>Linear</b>
+    Issue „Intent steht" auf Done.
   </div>
 </div>
+</section>
+
+<!-- ============ SCHRITT 02 ============ -->
+<section id="sitzung">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">02</div>
+    <h2>Neue Sitzung vorbereiten</h2>
+  </div>
+  <p class="duration">ca. 8 Minuten</p>
+
+  <p>Weshalb eine neue Sitzung und nicht die alte: Die Sitzung des 27. Juli ist voll mit Server-Einrichtung. Für ein neues Vorhaben braucht es einen frischen Ordner und einen frischen Kontext, sonst arbeitet Claude Code gegen alten Ballast an.</p>
+
+  <p>Verloren geht dabei nichts. Bevor wir die alte Sitzung schließen, holen wir das Wissen heraus, das wir heute benötigen.</p>
+
+  <h3>1 · In der alten Sitzung: das Wissen sichern</h3>
+  <p>Öffne die Sitzung des 27. Juli und gib dort diesen Auftrag:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Fasse die Infrastruktur zusammen, die wir hier aufgebaut haben.
+Schreibe eine Datei architektur.md, die beschreibt: welcher VPS bei
+welchem Anbieter, wie Coolify konfiguriert ist, wie das
+GitHub-Repository angebunden ist und wie ein Deployment ablaeuft.
+Schreibe sie so, dass eine andere KI-Sitzung damit sofort arbeiten
+kann, ohne diesen Chat zu kennen.">Kopieren</button>
+<pre>Fasse die Infrastruktur zusammen, die wir hier aufgebaut haben.
+Schreibe eine Datei architektur.md, die beschreibt: welcher VPS bei
+welchem Anbieter, wie Coolify konfiguriert ist, wie das
+GitHub-Repository angebunden ist und wie ein Deployment ablaeuft.
+Schreibe sie so, dass eine andere KI-Sitzung damit sofort arbeiten
+kann, ohne diesen Chat zu kennen.</pre>
+  </div>
+
+  <h3>2 · Neuen Ordner anlegen</h3>
+  <p>Leg einen neuen Ordner an, benannt nach dem WAS aus deiner <code class="inline">intent.md</code>. Kopiere <code class="inline">architektur.md</code> und <code class="inline">intent.md</code> hinein.</p>
+
+  <h3>3 · Neue Sitzung starten</h3>
+  <p>Claude Code Desktop öffnen, neue Sitzung, diesen Ordner wählen, Modell <b>Opus 5</b>, Plan <b>Max</b>. Mehr passiert hier noch nicht, der erste Auftrag kommt in Schritt 03.</p>
+
+  <div class="warn">
+    <b>Falls du die alte Sitzung nicht hast:</b> Nimm die Vorlage unten, füll sie mit deinen eigenen Angaben und speichere sie als <code class="inline">architektur.md</code> in deinem neuen Ordner. Oder arbeite zunächst ganz ohne Architekturdokument weiter. Für die heutige Session ist es nicht zwingend, es macht später beim Deployment den Unterschied.
+  </div>
+
+  <div class="code">
+    <button class="copy" data-copy="# Architektur
+
+## Server
+Anbieter: [z. B. Hostinger]
+Produkt und Groesse: [z. B. KVM 2, 2 vCPU, 8 GB RAM, 100 GB SSD]
+Betriebssystem: [z. B. Ubuntu 24.04 LTS]
+Adresse oder IP: [z. B. 203.0.113.10]
+
+## Coolify
+Oberflaeche erreichbar unter: [z. B. http://203.0.113.10:8000]
+Bereits angelegte Anwendung: [z. B. hello-world]
+Zugewiesene Domain: [z. B. hello.meine-domain.de]
+
+## GitHub
+Repository: [z. B. meinname/hello-world]
+Anbindung an Coolify: [z. B. ueber die Coolify-GitHub-App]
+
+## Deployment
+So kommt eine Aenderung ins Netz: [z. B. Push auf main, Coolify baut
+automatisch neu, nach etwa einer Minute ist die Domain aktuell]">Kopieren</button>
+<pre><span class="c"># Architektur</span>
+
+<span class="c">## Server</span>
+Anbieter: [z. B. Hostinger]
+Produkt und Groesse: [z. B. KVM 2, 2 vCPU, 8 GB RAM, 100 GB SSD]
+Betriebssystem: [z. B. Ubuntu 24.04 LTS]
+Adresse oder IP: [z. B. 203.0.113.10]
+
+<span class="c">## Coolify</span>
+Oberflaeche erreichbar unter: [z. B. http://203.0.113.10:8000]
+Bereits angelegte Anwendung: [z. B. hello-world]
+Zugewiesene Domain: [z. B. hello.meine-domain.de]
+
+<span class="c">## GitHub</span>
+Repository: [z. B. meinname/hello-world]
+Anbindung an Coolify: [z. B. ueber die Coolify-GitHub-App]
+
+<span class="c">## Deployment</span>
+So kommt eine Aenderung ins Netz: [z. B. Push auf main, Coolify baut
+automatisch neu, nach etwa einer Minute ist die Domain aktuell]</pre>
+  </div>
+</div>
+</section>
+
+<!-- ============ SCHRITT 03 ============ -->
+<section id="startprompt">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">03</div>
+    <h2>Der Startprompt</h2>
+  </div>
+  <p class="duration">ca. 12 Minuten</p>
+
+  <p>Der erste Auftrag in einer neuen Sitzung entscheidet über den ganzen Abend. Deshalb schauen wir uns an, woraus er besteht, bevor du ihn abschickst. Er hat vier Teile:</p>
+
+  <ul class="plus">
+    <li><b>Der Bestand.</b> Was bereits da ist, steht in <code class="inline">architektur.md</code> und <code class="inline">intent.md</code>. Claude Code liest beide zuerst.</li>
+    <li><b>Bausteine:</b> Supabase als Datenbank, Linear als System für den Backlog. Dazu die Vorgabe, die Anwendung mit Vite und React zu bauen, damit heute alle dieselben Dateinamen vor sich haben.</li>
+    <li><b>Dein Anwendungsfall.</b> Der Inhalt aus <code class="inline">intent.md</code>, wörtlich in den Prompt eingesetzt.</li>
+    <li><b>Die Bitte um Führung.</b> Der Teil, den fast alle weglassen, und der heute den Unterschied macht.</li>
+  </ul>
+
+  <div class="code">
+    <button class="copy" data-copy="Lies zuerst architektur.md und intent.md in diesem Ordner.
+
+Jetzt moechte ich einen naechsten Schritt gehen und zwei Bausteine
+ergaenzen: Supabase als Datenbank und Linear als System fuer meinen
+Backlog. Die Anwendung selbst baust du als Vite-Projekt mit React
+in diesem Ordner.
+
+Mein Anwendungsfall steht in intent.md. Hier der Inhalt:
+[HIER DEN INHALT AUS intent.md EINSETZEN]
+
+Die Anwendung muss Eintraege anlegen und als Tabelle anzeigen,
+mit einer Spalte je Feld.
+
+Fuehre mich bitte 1:1 und sehr konkret durch den Prozess. Ich habe
+noch nie selbst Code geschrieben. Erklaere mir bei jedem Schritt
+kurz, was passiert und weshalb, bevor du ihn ausfuehrst.
+
+Fang mit meiner Feldliste an: pruefe sie, ergaenze, was fehlt, und
+streiche, was zu viel ist. Begruende beides kurz und warte auf meine
+Bestaetigung, bevor du die Tabelle anlegst.">Kopieren</button>
+<pre>Lies zuerst architektur.md und intent.md in diesem Ordner.
+
+Jetzt moechte ich einen naechsten Schritt gehen und zwei Bausteine
+ergaenzen: Supabase als Datenbank und Linear als System fuer meinen
+Backlog. Die Anwendung selbst baust du als Vite-Projekt mit React
+in diesem Ordner.
+
+Mein Anwendungsfall steht in intent.md. Hier der Inhalt:
+[HIER DEN INHALT AUS intent.md EINSETZEN]
+
+Die Anwendung muss Eintraege anlegen und als Tabelle anzeigen,
+mit einer Spalte je Feld.
+
+Fuehre mich bitte 1:1 und sehr konkret durch den Prozess. Ich habe
+noch nie selbst Code geschrieben. Erklaere mir bei jedem Schritt
+kurz, was passiert und weshalb, bevor du ihn ausfuehrst.
+
+Fang mit meiner Feldliste an: pruefe sie, ergaenze, was fehlt, und
+streiche, was zu viel ist. Begruende beides kurz und warte auf meine
+Bestaetigung, bevor du die Tabelle anlegst.</pre>
+  </div>
+
+  <p>Die beiden letzten Absätze sind der eigentliche Kern. Ohne sie baut Claude Code fünfzehn Minuten am Stück durch, am Ende läuft etwas, und du verstehst nichts davon. Mit ihnen hältst du das Tempo in der Hand und siehst jeden Schritt einzeln.</p>
+
+  <p>Das ist das Lernziel dieses Abends, nicht das SQL.</p>
+
+  <h3>Parallel dazu: das Supabase-Projekt</h3>
+  <p>Während Claude Code deine Feldliste prüft, legst du im Browser das Projekt an. In Supabase auf <b>New project</b>, Namen vergeben, Datenbank-Passwort setzen, als Region <b>Frankfurt</b> wählen. Das Passwort benötigst du heute nicht, notiere es trotzdem. Die Einrichtung dauert etwa eine Minute.</p>
+
+  <p>Danach auf <b>Project Settings</b>, dort <b>API</b>. Zwei Werte stehen dort:</p>
+  <ul class="plus">
+    <li><b>Project URL</b> — sieht aus wie <code class="inline">https://abcdefgh.supabase.co</code></li>
+    <li><b>anon public</b> — ein sehr langer Schlüssel, beginnt meist mit <code class="inline">eyJ</code></li>
+  </ul>
+
+  <div class="warn">
+    <b>Finger weg vom service_role key.</b> Der steht auf derselben Seite und umgeht alle Schutzregeln. Er gehört niemals in eine Anwendung und niemals in einen Chat. Wir brauchen ausschließlich den <b>anon</b>-Schlüssel.
+  </div>
+
+  <p>Beide Werte fügst du direkt in den Claude-Chat ein, mit einem Satz wie: „Das sind meine Supabase-Zugangsdaten, du brauchst sie gleich." Kein Zwischenspeichern in Notizen oder Dateien. Der anon key ist für die Öffentlichkeit bestimmt und darf dort stehen.</p>
+
+  <h3>Während Claude arbeitet: Die Datenbank ist zu, nicht offen</h3>
+  <p class="duration flush">ca. 5 Minuten</p>
+  <p>Nach dem Abschicken des Startprompts arbeitet Claude. Diese Zeit nutzen wir.</p>
+  <p>Eine Tabelle mit aktivierter Zugriffssperre gibt nichts heraus, bis eine Regel es erlaubt. Wer das nicht weiß, sucht den Fehler in seiner Anwendung, obwohl er in der Datenbank sitzt.</p>
+  <p>Gleich taucht in der <code class="inline">.env</code> das Präfix <code class="inline">VITE_</code> auf. Beides funktioniert gleich: Standardmäßig ist nichts freigegeben. Freigabe passiert ausdrücklich.</p>
+</div>
+</section>
+
+<!-- ============ SCHRITT 04 ============ -->
+<section id="datenbank">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">04</div>
+    <h2>Die Datenbank entsteht</h2>
+  </div>
+  <p class="duration">ca. 30 Minuten</p>
+
+  <p>Dieser Schritt hat eine feste Reihenfolge. Claude Code führt, diese Seite hält die Spur.</p>
+
+  <h3>1 · Projektgerüst</h3>
+  <p>Claude legt das Vite-Projekt an, lädt die Abhängigkeiten und startet <code class="inline">npm run dev</code>. Im Terminal steht danach eine Adresse, meist <code class="inline">http://localhost:5173</code>. Öffne sie im Browser. Das ist deine Anwendung, noch ohne Daten.</p>
+
+  <div class="warn"><b>Terminal offen lassen.</b> Solange dort <code class="inline">npm run dev</code> läuft, läuft deine Seite. Schließt du das Fenster, ist sie weg. Für weitere Befehle öffnest du ein zweites Terminal.</div>
+
+  <h3>2 · Die .env, angelegt durch Claude</h3>
+  <p>Du öffnest keinen Texteditor. Der Dateiname beginnt mit einem Punkt und wird von Finder und Explorer ausgeblendet. TextEdit speichert als RTF, der Windows-Editor hängt <code class="inline">.txt</code> an. Aus <code class="inline">.env</code> wird <code class="inline">.env.txt</code>, und nichts funktioniert.</p>
+  <p>Stattdessen dieser Auftrag an Claude:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Lege eine .env im Projektordner an mit VITE_SUPABASE_URL und
+VITE_SUPABASE_ANON_KEY, trage die Werte von oben ein, ergaenze .env
+in der .gitignore und zeige mir danach den Inhalt der Datei.">Kopieren</button>
+<pre>Lege eine .env im Projektordner an mit VITE_SUPABASE_URL und
+VITE_SUPABASE_ANON_KEY, trage die Werte von oben ein, ergaenze .env
+in der .gitignore und zeige mir danach den Inhalt der Datei.</pre>
+  </div>
+
+  <p>Den Inhalt sollst du sehen, nicht schreiben müssen.</p>
+
+  <p>Vite reicht nur Variablen an den Browser weiter, deren Name mit <code class="inline">VITE_</code> beginnt. Das ist kein Namensschema, sondern eine Freigabe. Diese beiden Werte landen im Browser und sind für jeden lesbar. Deshalb steht dort der anon key und niemals der <code class="inline">service_role</code> key. Dasselbe Prinzip wie die Zugriffssperre aus Schritt 03: Standardmäßig ist nichts freigegeben.</p>
+
+  <h3>3 · Neustart des Entwicklungsservers</h3>
+  <div class="warn"><b>Nach dem Anlegen der .env muss der Entwicklungsserver neu gestartet werden.</b> Speichern allein reicht nicht, die Werte werden beim Start eingelesen. Das ist die häufigste Fehlerquelle des Abends. Im Terminal beendest du mit Strg und C, auch auf dem Mac. Nicht Cmd. Danach <code class="inline">npm run dev</code>.</div>
+
+  <h3>4 · Die Tabelle, in zwei SQL-Blöcken</h3>
+  <p>Claude hat keinen Zugriff auf deine Datenbank. Er schreibt das SQL, ausführen musst du es selbst im SQL Editor von Supabase.</p>
+  <p>Für die Blaupause aus Schritt 01, Kontakte, sind beide Blöcke fertig ausformuliert. Bei einem eigenen Anwendungsfall tauschst du nur den Tabellennamen. Die Spalten stehen ausschließlich im ersten Block.</p>
+
+  <h3>Block 1 · Anlegen und sperren</h3>
+  <div class="code">
+    <button class="copy" data-copy="create table kontakte (
+  id uuid primary key default gen_random_uuid(),
+  angelegt_am timestamptz not null default now(),
+  vorname text not null,
+  nachname text not null,
+  firma text,
+  email text,
+  telefon text,
+  notiz text
+);
+
+alter table kontakte enable row level security;">Kopieren</button>
+<pre><span class="k">create table</span> kontakte (
+  id uuid <span class="k">primary key</span> <span class="k">default</span> gen_random_uuid(),
+  angelegt_am timestamptz <span class="k">not null</span> <span class="k">default</span> now(),
+  vorname text <span class="k">not null</span>,
+  nachname text <span class="k">not null</span>,
+  firma text,
+  email text,
+  telefon text,
+  notiz text
+);
+
+<span class="k">alter table</span> kontakte <span class="k">enable row level security</span>;</pre>
+  </div>
+
+  <p>Das <code class="inline">alter table</code> gehört dazu: Tabellen aus dem Table Editor sind automatisch gesperrt, Tabellen aus dem SQL Editor nicht. Wer das vergisst, hat eine offene Tabelle im Netz.</p>
+
+  <p>Zwei Beispielzeilen, damit Wegmarke 1 etwas zu zeigen hat:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="insert into kontakte (vorname, nachname, firma, email, telefon, notiz) values
+  ('Erika', 'Mustermann', 'Mustermann GmbH', 'erika@example.com', '+49 170 1234567', 'Kennengelernt auf der Messe'),
+  ('Max', 'Beispiel', 'Beispiel AG', 'max@example.org', '+49 170 7654321', 'Rueckruf vereinbart');">Kopieren</button>
+<pre><span class="k">insert into</span> kontakte (vorname, nachname, firma, email, telefon, notiz) <span class="k">values</span>
+  ('Erika', 'Mustermann', 'Mustermann GmbH', 'erika@example.com', '+49 170 1234567', 'Kennengelernt auf der Messe'),
+  ('Max', 'Beispiel', 'Beispiel AG', 'max@example.org', '+49 170 7654321', 'Rueckruf vereinbart');</pre>
+  </div>
+
+  <h3>Block 2 · Öffnung</h3>
+  <div class="code">
+    <button class="copy" data-copy="create policy &quot;lesen&quot; on kontakte for select using (true);
+create policy &quot;anlegen&quot; on kontakte for insert with check (true);
+create policy &quot;aendern&quot; on kontakte for update using (true);
+create policy &quot;loeschen&quot; on kontakte for delete using (true);">Kopieren</button>
+<pre><span class="k">create policy</span> "lesen" <span class="k">on</span> kontakte <span class="k">for select using</span> (true);
+<span class="k">create policy</span> "anlegen" <span class="k">on</span> kontakte <span class="k">for insert with check</span> (true);
+<span class="k">create policy</span> "aendern" <span class="k">on</span> kontakte <span class="k">for update using</span> (true);
+<span class="k">create policy</span> "loeschen" <span class="k">on</span> kontakte <span class="k">for delete using</span> (true);</pre>
+  </div>
+
+  <div class="warn">
+    <b>Achtung bei <code class="inline">using (true)</code>:</b> Das heißt „jeder darf alles". Für heute ist das richtig, für echte Daten ist es falsch. Sobald deine Anwendung im Netz steht und echte Daten enthält, gehört dort eine Regel hin, die an den angemeldeten Nutzer gebunden ist.
+  </div>
+
+  <h3>5 · Drei Wegmarken</h3>
+  <ul class="plus">
+    <li><b>Die Tabelle existiert.</b> Die zwei Beispielzeilen sind im Table Editor sichtbar.</li>
+    <li><b>Die Anwendung zeigt zunächst nichts.</b> Das ist kein Fehler, das ist die Zugriffssperre. Nach Block 2 erscheinen die Daten als Tabelle, mit einer Spalte je Feld. Das ist der Moment, an dem Anwendung und Datenbank sichtbar zusammenkommen.</li>
+    <li><b>Die Anwendung schreibt.</b> Das Formular legt einen neuen Eintrag an.</li>
+  </ul>
+
+  <details>
+    <summary><span class="sig">++</span> Plus <span class="hint">Ladezustand und Leerzustand</span></summary>
+    <div class="details-body">
+      <p>Eine leere weiße Fläche ist die schlechteste Antwort, die eine Anwendung geben kann. Wer davor sitzt, weiß nicht, ob sie lädt, leer ist oder kaputt.</p>
+      <div class="code">
+        <button class="copy" data-copy="Behandle drei Faelle sauber: Waehrend die Daten geladen werden, zeige einen Ladehinweis. Wenn noch keine Eintraege vorhanden sind, zeige stattdessen einen kurzen Hinweis mit der Aufforderung, den ersten Eintrag anzulegen. Und falls die Datenbank einen Fehler zurueckgibt, zeige eine verstaendliche Meldung statt einer leeren Seite.">Kopieren</button>
+<pre>Behandle drei Faelle sauber: Waehrend die Daten geladen werden,
+zeige einen Ladehinweis. Wenn noch keine Eintraege vorhanden sind,
+zeige stattdessen einen kurzen Hinweis mit der Aufforderung, den
+ersten Eintrag anzulegen. Und falls die Datenbank einen Fehler
+zurueckgibt, zeige eine verstaendliche Meldung statt einer leeren
+Seite.</pre>
+      </div>
+      <p>Der dritte Fall zahlt sich aus. Wenn heute Abend etwas klemmt, siehst du damit sofort, woran es liegt.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Bearbeiten und löschen</span></summary>
+    <div class="details-body">
+      <div class="code">
+        <button class="copy" data-copy="Mache die Eintraege bearbeitbar: Ein Klick auf einen Eintrag oeffnet die Felder zum Aendern, Speichern schreibt die Aenderung in die Datenbank zurueck. Ergaenze ausserdem bei jedem Eintrag einen Loeschen-Knopf, der den Eintrag nach einer Rueckfrage aus der Datenbank entfernt.">Kopieren</button>
+<pre>Mache die Eintraege bearbeitbar: Ein Klick auf einen Eintrag
+oeffnet die Felder zum Aendern, Speichern schreibt die Aenderung
+in die Datenbank zurueck. Ergaenze ausserdem bei jedem Eintrag
+einen Loeschen-Knopf, der den Eintrag nach einer Rueckfrage aus
+der Datenbank entfernt.</pre>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Supabase MCP</span></summary>
+    <div class="details-body">
+      <p>Erst wenn alle drei Wegmarken von Hand erledigt sind. Wer die Tabelle nie selbst im Table Editor gesehen hat, versteht in Schritt 05 nicht, was die zwei Fenster zeigen.</p>
+      <p>Danach den Supabase MCP in Claude Code verbinden. Claude legt dann Tabellen und Policies selbst an, ohne Wechsel in den Browser. Als Beispiel: eine zweite Tabelle.</p>
+      <div class="warn">
+        <b>Finger weg vom Token im falschen Ort.</b> Für die Anbindung braucht Claude einen Personal Access Token, und der gilt für alle deine Projekte, nicht nur für dieses. Derselbe Grundsatz wie beim <code class="inline">service_role</code> key: kein Token ins Repository, kein Token in einen Chat.
+      </div>
+    </div>
+  </details>
+</div>
+</section>
+
+<!-- ============ PAUSE ============ -->
+<section id="pause">
+<div class="wrap">
+  <div class="pause">
+    <h3>Pause</h3>
+    <p class="duration">ca. 8 Minuten</p>
+    <p>Nichts tun. Terminal offen lassen, Rechner nicht zuklappen.</p>
+    <p>Zurück im Call: Schreib in einem Wort in den Chat, was gerade auf deinem Bildschirm steht.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============ SCHRITT 05 ============ -->
+<section id="zweifenster">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">05</div>
+    <h2>Zwei Fenster, eine Wahrheit</h2>
+  </div>
+  <p class="duration">ca. 12 Minuten · alle gemeinsam</p>
+
+  <div class="warn"><b>Hier gibt es kein Plus und keine Kür.</b> Wir machen das alle gleichzeitig.</div>
+
+  <p>Stell zwei Browserfenster nebeneinander. Links deine Anwendung aus Schritt 04 auf <code class="inline">localhost</code>, mit Formular und Tabelle. Rechts in Supabase der <b>Table Editor</b> mit deiner Tabelle: Das Raster zeigt die Datensätze, und <b>Insert row</b> öffnet die Eingabefelder.</p>
+  <p>Leg links über dein Formular einen Eintrag an, lade rechts neu. Die Zeile ist da. Dann umgekehrt: leg rechts über Insert row eine Zeile an, lade links neu. Sie erscheint.</p>
+  <p>Falls deine Anwendung noch nicht schreiben kann, prüf nur die Leserichtung: rechts eine Zeile anlegen, links neu laden. Der Punkt ist derselbe.</p>
+
+  <p>Der Punkt daran, ausgesprochen: Deine Anwendung und deine Daten sind zwei getrennte Dinge. Die Anwendung läuft auf deinem Rechner. Die Daten liegen in Frankfurt. Du könntest die Anwendung morgen löschen und neu bauen, die Daten wären noch da.</p>
+
+  <h3>Kurz zeigen</h3>
+  <p>Zwei bis drei Teilnehmer zeigen ihre Anwendung. Der Rest schaut zu.</p>
+</div>
+</section>
+
+<!-- ============ SCHRITT 06 ============ -->
+<section id="rechte">
+<div class="wrap">
+  <div class="step-head">
+    <div class="step-num">06</div>
+    <h2>Abschluss und Ausblick</h2>
+  </div>
+  <p class="duration">ca. 10 Minuten</p>
+
+  <h3>1 · Das offene Issue</h3>
+  <div class="linear">
+    <b>Linear</b>
+    Das zweite Issue aus Schritt 01 auf Done setzen, wenn die Anwendung Einträge erfasst und als Tabelle zeigt.
+  </div>
+
+  <h3>2 · Echte Zugriffsregeln</h3>
+  <p>Heute steht überall <code class="inline">using (true)</code>: jeder darf alles. Für echte Daten muss die Regel an den angemeldeten Nutzer gebunden sein.</p>
+  <p>Die Regel steht in der Datenbank, nicht im Programm. Deshalb kann sie niemand umgehen, indem er die Anwendung verändert.</p>
+
+  <h3>3 · Backlog füllen</h3>
+  <p>Die Issues von heute und das Backlog sind dieselbe Sorte Eintrag. Das eine ist erledigt, das andere noch nicht. Trag Ergebnisse ein, beginnend mit dem Punkt von eben:</p>
+  <ul class="plus">
+    <li>Zugriffsregeln an den angemeldeten Nutzer gebunden</li>
+    <li>Anmeldung mit Mailadresse und Passwort</li>
+    <li>Zweite Tabelle mit Bezug zur ersten</li>
+    <li>Suche und Filter über die Liste</li>
+    <li>Anwendung läuft auf dem eigenen VPS</li>
+  </ul>
+
+  <h3>4 · Weg ins Netz</h3>
+  <p>Deine Anwendung läuft bisher nur lokal. Der Weg auf den eigenen VPS ist dir bekannt, das Hello World steht ja schon dort. Bei einer Anwendung mit Datenbank sind zwei Dinge anders:</p>
+  <ul class="plus">
+    <li>Die <code class="inline">.env</code> gehört nicht ins Repository. Die beiden Werte hinterlegst du in Coolify als Umgebungsvariablen.</li>
+    <li>Änderst du sie dort später, reicht kein Neustart. Die Anwendung muss neu gebaut werden, weil die Werte beim Bauen fest eingesetzt werden.</li>
+  </ul>
+
+  <details>
+    <summary><span class="sig">+++</span> Kür <span class="hint">Linear MCP</span></summary>
+    <div class="details-body">
+      <p>Linear MCP in Claude Code verbinden. Danach schreibt Claude die offenen Punkte aus der Liste oben selbst als Issues, statt dass du sie abtippst.</p>
+      <div class="warn">
+        <b>Finger weg vom Token im falschen Ort.</b> Auch hier braucht Claude Zugangsdaten. Derselbe Grundsatz wie beim <code class="inline">service_role</code> key und beim Supabase-Token: kein Token ins Repository, kein Token in einen Chat.
+      </div>
+    </div>
+  </details>
+
+  <p>Und der nächste Schritt danach, nicht der heutige: Claude arbeitet nicht mehr nur an deinem Code. Mit MCP greift er auch auf deine Datenbank und dein Backlog zu.</p>
+
+  <p>Diese Seite bleibt online. Wenn du in der Session nicht mitgekommen bist oder gar nicht dabei warst, arbeite sie in Ruhe durch. Die Schritte funktionieren einzeln, nur der gemeinsame Teil in Schritt 05 braucht die Gruppe.</p>
+
+  <div class="warn"><b>Und der Satz vom Anfang gilt weiter:</b> Basis reicht. Wer heute eine Anwendung mit eigener Datenbank zum Laufen gebracht hat, kann etwas, das er vorher nicht konnte. Alles Weitere ist Zugabe.</div>
+</div>
+</section>
 
 <footer>
   <div class="wrap footer-in">
@@ -121,7 +602,7 @@
   </div>
 </footer>
 
-<script src="/assets/js/main.js?v=20260810b"></script>
+<script src="/assets/js/main.js?v=20260810d"></script>
 
 </body>
 </html>
