@@ -42,6 +42,39 @@ automatisches Deployen prüfen. Erst danach auf Pfad A ausweichen.
 
 ---
 
+## Vorschau · Branch `vollversion` für ausgewählte Kontakte
+
+Zwei Adressen, zwei Coolify-Resources, ein Repo:
+
+| Adresse | Branch | Compose-Datei | Wer |
+|---------|--------|---------------|-----|
+| `kim-10082026.berent.ai` | `main` | `docker-compose.yaml` | alle (Vorab) |
+| `kim-vorschau.berent.ai` | `vollversion` | `docker-compose.preview.yaml` | nur mit Link |
+
+### Einmalig einrichten
+
+1. **Cloudflare:** A-Record `kim-vorschau` → `72.61.84.149`, Proxy an (wie die andere Subdomain).
+2. **Coolify:** New Resource → dasselbe Repo → Branch **`vollversion`** → Destination `traefik-root-default` → Build Pack Docker Compose → Compose-Datei **`/docker-compose.preview.yaml`**.
+3. Domain: Generate Domain, ersetzen durch `https://kim-vorschau.berent.ai`, Save, Deploy.
+4. Automatic Deployment aktiv lassen. Jeder Push auf `vollversion` aktualisiert nur die Vorschau.
+
+### Alltag
+
+```bash
+# arbeiten und veroeffentlichen fuer die Vorschau
+git checkout vollversion
+# ... aendern ...
+git add -A && git commit -m "..." && git push
+
+# oeffentliche Vorab anfassen nur auf main, und vorher/nachher:
+git checkout vollversion && git merge main && git push
+```
+
+Am Sessiontag die Vollversion freischalten wie gehabt: `main` ← `vollversion` mergen
+und pushen. Die Vorschau-Resource darf danach stehen bleiben oder gelöscht werden.
+
+---
+
 ## Vor jeder Demo · 60-Sekunden-Check
 
 ```bash
