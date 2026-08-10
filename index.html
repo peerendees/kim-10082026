@@ -6,7 +6,7 @@
 <title>KI-Masterclass · Datenbank-Anbindung mit Supabase</title>
 <meta name="description" content="Arbeitsunterlage zur Masterclass-Session: eine eigene Datenbank mit Supabase, angebunden an den eigenen Anwendungsfall.">
 <link rel="icon" type="image/png" href="/assets/images/favicon-32.png">
-<link rel="stylesheet" href="/assets/css/style.css?v=20260810c">
+<link rel="stylesheet" href="/assets/css/style.css?v=20260810d">
 <script>
   /* Modus vor dem ersten Rendern setzen, sonst blitzt der dunkle Hintergrund auf. */
   try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
@@ -72,7 +72,7 @@
   <p class="vorab-label">Vorab · einmalig</p>
   <h2>Vorab, bitte vor der Session</h2>
 
-  <div class="warn"><b>Ohne die Punkte unten funktioniert die Session nicht.</b> Das gilt live und wenn du die Seite später allein durchgehst. Wenn etwas klemmt, melde dich rechtzeitig.</div>
+  <div class="warn"><b>Ohne die drei Konten unten funktioniert die Session nicht.</b> Claude Code, Supabase, Linear. Das gilt live und wenn du die Seite später allein durchgehst. Wenn etwas klemmt, melde dich rechtzeitig.</div>
 
   <h3>1 · Claude Code startklar</h3>
   <p>Claude Code muss laufen, und du solltest dich einmal eingeloggt haben. Prüfe dabei dein Kontingent. Wir arbeiten mit <b>Opus 5 (falls möglich, stets auf Max)</b>, und das verbraucht spürbar.</p>
@@ -99,13 +99,13 @@
     <div class="step-num">01</div>
     <h2>Dein Anwendungsfall</h2>
   </div>
-  <p class="duration">ca. 22 Minuten</p>
+  <p class="duration">ca. 17 Minuten</p>
 
   <p>Nicht jede Anwendung braucht eine Datenbank. Sie braucht eine, sobald Daten länger leben sollen als ein Seitenaufruf, oder sobald mehr als eine Person darauf zugreift. Beides trifft auf das zu, was du heute baust.</p>
 
   <p>Es gibt kein vorgegebenes Thema. Du wählst jetzt, woran du die nächsten zwei Stunden arbeitest.</p>
 
-  <details>
+  <details class="impulse">
     <summary>Impulse <span class="hint">falls du noch unentschlossen bist</span></summary>
     <div class="details-body">
       <ul class="plus">
@@ -132,8 +132,8 @@
   <div class="warn"><b>Der Anwendungsfall darf klein sein … und echt.</b> Ausbauen kannst du ab morgen.</div>
 
   <h3>Deine Vorlage als intent.md</h3>
-  <p>Der Engpass beim Bauen mit KI ist nicht das Werkzeug. Es ist, wie genau du sagen kannst, was du willst. Wer den Intent aufschreibt, statt ihn zu tippen, kann ihn überarbeiten. Und die Datei ist beim nächsten Projekt wieder da.</p>
-  <p>Öffne dafür einen leeren Texteditor, nicht Claude. Speichere die Datei als <code class="inline">intent.md</code>. Später liegt sie neben <code class="inline">architektur.md</code> im Projektordner. In Schritt 03 kommt ihr Inhalt in den Startprompt.</p>
+  <p>Der Engpass beim Bauen mit KI ist nicht das Werkzeug. Es ist, wie genau du sagen kannst, was du willst. Wer den Intent aufschreibt, statt ihn zu tippen, kann ihn überarbeiten. Und die Datei trägt beim nächsten Projekt genauso.</p>
+  <p>Öffne dafür einen leeren Texteditor. Noch kein anderes Werkzeug. Speichere die Datei als <code class="inline">intent.md</code>. Später liegt sie neben <code class="inline">architektur.md</code> im Projektordner. In Schritt 03 kommt ihr Inhalt in den Startprompt.</p>
 
   <div class="code">
     <button class="copy" data-copy="Ich moechte [WAS] verwalten.
@@ -146,18 +146,33 @@ Anlegen und als Tabelle anzeigen reicht als Umfang.
 Das Ziel: [was es dir nutzt]</pre>
   </div>
 
-  <div class="linear">
-    <b>Linear</b>
-    Leg ein Projekt an, benannt nach dem WAS aus deiner <code class="inline">intent.md</code>. Ein Wort oder zwei, kein Satz. Kein neues Team: Linear hat bei der Registrierung schon Workspace und Team angelegt. Der Name, den du dort vergeben hast, ist Team-Name und Grundlage für das Kürzel. Ändern kannst du das Kürzel in den Team-Einstellungen unter General. Issue-Nummern vergibt Linear selbst, von KÜRZEL-1 aufsteigend. Du tippst nie eine Nummer.
+  <h3>Ausgefüllte Blaupause</h3>
+  <p>Unentschlossen? Nimm dieses Beispiel eins zu eins. Es wird die ganze Seite hindurch weitergeführt, mit fertigem SQL in Schritt 04.</p>
+
+  <div class="code">
+    <button class="copy" data-copy="Ich moechte meine beruflichen Kontakte verwalten.
+Die wichtigsten Angaben: Vorname, Nachname, Firma, E-Mail, Telefon, Notiz.
+Anlegen und als Tabelle anzeigen reicht als Umfang.
+Das Ziel: Ich sehe auf einen Blick, wen ich kenne und worueber wir gesprochen haben.">Kopieren</button>
+<pre>Ich moechte meine beruflichen Kontakte verwalten.
+Die wichtigsten Angaben: Vorname, Nachname, Firma, E-Mail, Telefon, Notiz.
+Anlegen und als Tabelle anzeigen reicht als Umfang.
+Das Ziel: Ich sehe auf einen Blick, wen ich kenne und worueber wir
+gesprochen haben.</pre>
   </div>
 
-  <p>Vier Issues, als Ergebnis formuliert:</p>
+  <h3>Linear · zwei Issues</h3>
+  <p class="duration flush">ca. 5 Minuten</p>
+  <p>Der Intent steht. Jetzt das erste Werkzeug.</p>
+  <p>Leg ein Projekt an, benannt nach dem WAS aus deiner <code class="inline">intent.md</code>. Ein Wort oder zwei, kein Satz. Kein neues Team: Linear hat bei der Registrierung schon Workspace und Team angelegt. Der Name, den du dort vergeben hast, bestimmt Team und Kürzel. Wer das Kürzel ändern will, findet es in den Team-Einstellungen unter General, muss es aber nicht. Issue-Nummern vergibt Linear selbst, von KÜRZEL-1 aufsteigend. Du tippst nie eine Nummer. Im kostenlosen Plan sind zwei Teams möglich, Projekte unbegrenzt. Der Anwendungsfall wird als Projekt in diesem Team angelegt.</p>
+
+  <p>Genau zwei Issues:</p>
   <ul class="plus">
-    <li>Intent steht</li>
-    <li>Arbeitsumgebung steht</li>
-    <li>Tabelle mit Regeln steht</li>
-    <li>Anwendung erfasst und zeigt als Tabelle</li>
+    <li><b>Intent steht</b> — sofort auf Done</li>
+    <li><b>Das Ziel aus intent.md</b>, in eigenen Worten, etwa „Anwendung erfasst Kontakte und zeigt sie als Tabelle" — bleibt offen bis Schritt 06</li>
   </ul>
+
+  <p>Ein erledigter Eintrag und ein offener. Mehr braucht ein Backlog nicht, um verständlich zu sein.</p>
 
   <div class="linear">
     <b>Linear</b>
@@ -259,7 +274,7 @@ automatisch neu, nach etwa einer Minute ist die Domain aktuell]</pre>
     <div class="step-num">03</div>
     <h2>Der Startprompt</h2>
   </div>
-  <p class="duration">ca. 15 Minuten</p>
+  <p class="duration">ca. 12 Minuten</p>
 
   <p>Der erste Auftrag in einer neuen Sitzung entscheidet über den ganzen Abend. Deshalb schauen wir uns an, woraus er besteht, bevor du ihn abschickst. Er hat vier Teile:</p>
 
@@ -320,7 +335,7 @@ Bestaetigung, bevor du die Tabelle anlegst.</pre>
   <h3>Parallel dazu: das Supabase-Projekt</h3>
   <p>Während Claude Code deine Feldliste prüft, legst du im Browser das Projekt an. In Supabase auf <b>New project</b>, Namen vergeben, Datenbank-Passwort setzen, als Region <b>Frankfurt</b> wählen. Das Passwort benötigst du heute nicht, notiere es trotzdem. Die Einrichtung dauert etwa eine Minute.</p>
 
-  <p>Danach auf <b>Project Settings</b>, dort <b>API</b>. Zwei Werte stehen dort, die du gleich benötigst:</p>
+  <p>Danach auf <b>Project Settings</b>, dort <b>API</b>. Zwei Werte stehen dort:</p>
   <ul class="plus">
     <li><b>Project URL</b> — sieht aus wie <code class="inline">https://abcdefgh.supabase.co</code></li>
     <li><b>anon public</b> — ein sehr langer Schlüssel, beginnt meist mit <code class="inline">eyJ</code></li>
@@ -330,13 +345,13 @@ Bestaetigung, bevor du die Tabelle anlegst.</pre>
     <b>Finger weg vom service_role key.</b> Der steht auf derselben Seite und umgeht alle Schutzregeln. Er gehört niemals in eine Anwendung und niemals in einen Chat. Wir brauchen ausschließlich den <b>anon</b>-Schlüssel.
   </div>
 
-  <h3>Bevor du baust: Die Datenbank ist zu, nicht offen</h3>
-  <p>Eine neue Tabelle in Supabase ist standardmäßig gesperrt. Niemand darf etwas, bis eine Regel es erlaubt. Wer das nicht weiß, sucht den Fehler in seiner Anwendung, obwohl er in der Datenbank sitzt. Die Regeln setzen wir in Schritt 04, sobald die Tabelle steht.</p>
+  <p>Beide Werte fügst du direkt in den Claude-Chat ein, mit einem Satz wie: „Das sind meine Supabase-Zugangsdaten, du brauchst sie gleich." Kein Zwischenspeichern in Notizen oder Dateien. Der anon key ist für die Öffentlichkeit bestimmt und darf dort stehen.</p>
 
-  <div class="linear">
-    <b>Linear</b>
-    Issue „Arbeitsumgebung steht" auf Done.
-  </div>
+  <h3>Während Claude arbeitet: Die Datenbank ist zu, nicht offen</h3>
+  <p class="duration flush">ca. 5 Minuten</p>
+  <p>Nach dem Abschicken des Startprompts arbeitet Claude. Diese Zeit nutzen wir.</p>
+  <p>Eine Tabelle mit aktivierter Zugriffssperre gibt nichts heraus, bis eine Regel es erlaubt. Wer das nicht weiß, sucht den Fehler in seiner Anwendung, obwohl er in der Datenbank sitzt.</p>
+  <p>Gleich taucht in der <code class="inline">.env</code> das Präfix <code class="inline">VITE_</code> auf. Beides funktioniert gleich: Standardmäßig ist nichts freigegeben. Freigabe passiert ausdrücklich.</p>
 </div>
 </section>
 
@@ -349,62 +364,100 @@ Bestaetigung, bevor du die Tabelle anlegst.</pre>
   </div>
   <p class="duration">ca. 30 Minuten</p>
 
-  <p>Der längste Block des Abends, und der einzige, den diese Seite nicht Schritt für Schritt vorgeben kann. Jeder baut etwas anderes, also führt dich Claude Code, nicht diese Seite. Was hier steht, ist Orientierung: woran du erkennst, dass es läuft, und was du tust, wenn nicht.</p>
+  <p>Dieser Schritt hat eine feste Reihenfolge. Claude Code führt, diese Seite hält die Spur.</p>
 
-  <h3>Drei Wegmarken</h3>
-  <p>An diesen drei Punkten hältst du kurz inne und prüfst, ob wirklich passiert ist, was passieren sollte.</p>
-  <ul class="plus">
-    <li><b>Die Tabelle existiert.</b> Im Table Editor sichtbar, mit den Spalten aus deinem Anwendungsfall.</li>
-    <li><b>Die Anwendung zeigt die Daten als Tabelle an, mit einer Spalte je Feld.</b> Trag vorher zwei Zeilen von Hand im Table Editor ein, dann hast du etwas zu sehen.</li>
-    <li><b>Die Anwendung schreibt Daten.</b> Ein Formular, ein Eintrag, eine neue Zeile.</li>
-  </ul>
+  <h3>1 · Projektgerüst</h3>
+  <p>Claude legt das Vite-Projekt an, lädt die Abhängigkeiten und startet <code class="inline">npm run dev</code>. Im Terminal steht danach eine Adresse, meist <code class="inline">http://localhost:5173</code>. Öffne sie im Browser. Das ist deine Anwendung, noch ohne Daten.</p>
 
-  <div class="warn">
-    <b>Tabelle steht, Daten drin, Anwendung zeigt nichts:</b> Liegt fast immer an den Zugriffsregeln. Eine neue Tabelle ist gesperrt, bis Regeln sie öffnen. Diese vier Zeilen passen auf jede Tabelle, du ersetzt nur den Namen:
-  </div>
+  <div class="warn"><b>Terminal offen lassen.</b> Solange dort <code class="inline">npm run dev</code> läuft, läuft deine Seite. Schließt du das Fenster, ist sie weg. Für weitere Befehle öffnest du ein zweites Terminal.</div>
+
+  <h3>2 · Die .env, angelegt durch Claude</h3>
+  <p>Du öffnest keinen Texteditor. Der Dateiname beginnt mit einem Punkt und wird von Finder und Explorer ausgeblendet. TextEdit speichert als RTF, der Windows-Editor hängt <code class="inline">.txt</code> an. Aus <code class="inline">.env</code> wird <code class="inline">.env.txt</code>, und nichts funktioniert.</p>
+  <p>Stattdessen dieser Auftrag an Claude:</p>
 
   <div class="code">
-    <button class="copy" data-copy="alter table DEINE_TABELLE enable row level security;
+    <button class="copy" data-copy="Lege eine .env im Projektordner an mit VITE_SUPABASE_URL und
+VITE_SUPABASE_ANON_KEY, trage die Werte von oben ein, ergaenze .env
+in der .gitignore und zeige mir danach den Inhalt der Datei.">Kopieren</button>
+<pre>Lege eine .env im Projektordner an mit VITE_SUPABASE_URL und
+VITE_SUPABASE_ANON_KEY, trage die Werte von oben ein, ergaenze .env
+in der .gitignore und zeige mir danach den Inhalt der Datei.</pre>
+  </div>
 
-create policy &quot;lesen&quot;    on DEINE_TABELLE for select using (true);
-create policy &quot;anlegen&quot;  on DEINE_TABELLE for insert with check (true);
-create policy &quot;aendern&quot;  on DEINE_TABELLE for update using (true);
-create policy &quot;loeschen&quot; on DEINE_TABELLE for delete using (true);">Kopieren</button>
-<pre><span class="k">alter table</span> DEINE_TABELLE <span class="k">enable row level security</span>;
+  <p>Den Inhalt sollst du sehen, nicht schreiben müssen.</p>
 
-<span class="k">create policy</span> "lesen"    <span class="k">on</span> DEINE_TABELLE <span class="k">for select using</span> (true);
-<span class="k">create policy</span> "anlegen"  <span class="k">on</span> DEINE_TABELLE <span class="k">for insert with check</span> (true);
-<span class="k">create policy</span> "aendern"  <span class="k">on</span> DEINE_TABELLE <span class="k">for update using</span> (true);
-<span class="k">create policy</span> "loeschen" <span class="k">on</span> DEINE_TABELLE <span class="k">for delete using</span> (true);</pre>
+  <p>Vite reicht nur Variablen an den Browser weiter, deren Name mit <code class="inline">VITE_</code> beginnt. Das ist kein Namensschema, sondern eine Freigabe. Diese beiden Werte landen im Browser und sind für jeden lesbar. Deshalb steht dort der anon key und niemals der <code class="inline">service_role</code> key. Dasselbe Prinzip wie die Zugriffssperre aus Schritt 03: Standardmäßig ist nichts freigegeben.</p>
+
+  <h3>3 · Neustart des Entwicklungsservers</h3>
+  <div class="warn"><b>Nach dem Anlegen der .env muss der Entwicklungsserver neu gestartet werden.</b> Speichern allein reicht nicht, die Werte werden beim Start eingelesen. Das ist die häufigste Fehlerquelle des Abends. Im Terminal beendest du mit Strg und C, auch auf dem Mac. Nicht Cmd. Danach <code class="inline">npm run dev</code>.</div>
+
+  <h3>4 · Die Tabelle, in zwei SQL-Blöcken</h3>
+  <p>Claude hat keinen Zugriff auf deine Datenbank. Er schreibt das SQL, ausführen musst du es selbst im SQL Editor von Supabase.</p>
+  <p>Für die Blaupause aus Schritt 01, Kontakte, sind beide Blöcke fertig ausformuliert. Bei einem eigenen Anwendungsfall tauschst du nur den Tabellennamen. Die Spalten stehen ausschließlich im ersten Block.</p>
+
+  <h3>Block 1 · Anlegen und sperren</h3>
+  <div class="code">
+    <button class="copy" data-copy="create table kontakte (
+  id uuid primary key default gen_random_uuid(),
+  angelegt_am timestamptz not null default now(),
+  vorname text not null,
+  nachname text not null,
+  firma text,
+  email text,
+  telefon text,
+  notiz text
+);
+
+alter table kontakte enable row level security;">Kopieren</button>
+<pre><span class="k">create table</span> kontakte (
+  id uuid <span class="k">primary key</span> <span class="k">default</span> gen_random_uuid(),
+  angelegt_am timestamptz <span class="k">not null</span> <span class="k">default</span> now(),
+  vorname text <span class="k">not null</span>,
+  nachname text <span class="k">not null</span>,
+  firma text,
+  email text,
+  telefon text,
+  notiz text
+);
+
+<span class="k">alter table</span> kontakte <span class="k">enable row level security</span>;</pre>
+  </div>
+
+  <p>Das <code class="inline">alter table</code> gehört dazu: Tabellen aus dem Table Editor sind automatisch gesperrt, Tabellen aus dem SQL Editor nicht. Wer das vergisst, hat eine offene Tabelle im Netz.</p>
+
+  <p>Zwei Beispielzeilen, damit Wegmarke 1 etwas zu zeigen hat:</p>
+
+  <div class="code">
+    <button class="copy" data-copy="insert into kontakte (vorname, nachname, firma, email, telefon, notiz) values
+  ('Erika', 'Mustermann', 'Mustermann GmbH', 'erika@example.com', '+49 170 1234567', 'Kennengelernt auf der Messe'),
+  ('Max', 'Beispiel', 'Beispiel AG', 'max@example.org', '+49 170 7654321', 'Rueckruf vereinbart');">Kopieren</button>
+<pre><span class="k">insert into</span> kontakte (vorname, nachname, firma, email, telefon, notiz) <span class="k">values</span>
+  ('Erika', 'Mustermann', 'Mustermann GmbH', 'erika@example.com', '+49 170 1234567', 'Kennengelernt auf der Messe'),
+  ('Max', 'Beispiel', 'Beispiel AG', 'max@example.org', '+49 170 7654321', 'Rueckruf vereinbart');</pre>
+  </div>
+
+  <h3>Block 2 · Öffnung</h3>
+  <div class="code">
+    <button class="copy" data-copy="create policy &quot;lesen&quot; on kontakte for select using (true);
+create policy &quot;anlegen&quot; on kontakte for insert with check (true);
+create policy &quot;aendern&quot; on kontakte for update using (true);
+create policy &quot;loeschen&quot; on kontakte for delete using (true);">Kopieren</button>
+<pre><span class="k">create policy</span> "lesen" <span class="k">on</span> kontakte <span class="k">for select using</span> (true);
+<span class="k">create policy</span> "anlegen" <span class="k">on</span> kontakte <span class="k">for insert with check</span> (true);
+<span class="k">create policy</span> "aendern" <span class="k">on</span> kontakte <span class="k">for update using</span> (true);
+<span class="k">create policy</span> "loeschen" <span class="k">on</span> kontakte <span class="k">for delete using</span> (true);</pre>
   </div>
 
   <div class="warn">
     <b>Achtung bei <code class="inline">using (true)</code>:</b> Das heißt „jeder darf alles". Für heute ist das richtig, für echte Daten ist es falsch. Sobald deine Anwendung im Netz steht und echte Daten enthält, gehört dort eine Regel hin, die an den angemeldeten Nutzer gebunden ist.
   </div>
 
-  <div class="linear">
-    <b>Linear</b>
-    Sobald Tabelle und Zugriffsregeln stehen: Issue „Tabelle mit Regeln steht" auf Done.
-  </div>
-
-  <h3>Das Projektgerüst und der erste Start</h3>
-  <p>Als Erstes legt Claude Code das Projekt in deinem Ordner an, lädt die Abhängigkeiten und startet den Entwicklungsserver. Im Terminal steht danach eine Adresse, meist <code class="inline">http://localhost:5173</code>. Öffne sie im Browser. Das ist deine Anwendung, noch ohne Daten.</p>
-
-  <div class="warn"><b>Terminal offen lassen.</b> Solange dort <code class="inline">npm run dev</code> läuft, läuft deine Seite. Schließt du das Fenster, ist sie weg. Für weitere Befehle öffnest du ein zweites Terminal.</div>
-
-  <h3>Die .env, für alle gleich</h3>
-  <p>Egal was du baust, die Verbindung sieht identisch aus. Claude Code legt die Datei an und bittet dich, die beiden Werte aus Schritt 03 einzusetzen. Falls es das nicht tut, legst du sie selbst an: Sie heißt nur <code class="inline">.env</code>, der Punkt am Anfang gehört dazu, und sie liegt im Projektordner neben der <code class="inline">package.json</code>.</p>
-
-  <div class="code">
-    <button class="copy" data-copy="VITE_SUPABASE_URL=https://DEINPROJEKT.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...">Kopieren</button>
-<pre>VITE_SUPABASE_URL=https://DEINPROJEKT.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6...</pre>
-  </div>
-
-  <p>Beide Platzhalter durch deine echten Werte aus Schritt 03 ersetzen. Keine Anführungszeichen, keine Leerzeichen um das Gleichheitszeichen.</p>
-
-  <div class="warn"><b>Nach dem Anlegen der .env muss der Entwicklungsserver neu gestartet werden.</b> Strg+C drückt ihn ab, <code class="inline">npm run dev</code> startet ihn wieder. Speichern allein reicht nicht, die Werte werden beim Start eingelesen. Das ist die häufigste Fehlerquelle des Abends.</div>
+  <h3>5 · Drei Wegmarken</h3>
+  <ul class="plus">
+    <li><b>Die Tabelle existiert.</b> Die zwei Beispielzeilen sind im Table Editor sichtbar.</li>
+    <li><b>Die Anwendung zeigt zunächst nichts.</b> Das ist kein Fehler, das ist die Zugriffssperre. Nach Block 2 erscheinen die Daten als Tabelle, mit einer Spalte je Feld. Das ist der Moment, an dem Anwendung und Datenbank sichtbar zusammenkommen.</li>
+    <li><b>Die Anwendung schreibt.</b> Das Formular legt einen neuen Eintrag an.</li>
+  </ul>
 
   <details>
     <summary><span class="sig">++</span> Plus <span class="hint">Ladezustand und Leerzustand</span></summary>
@@ -419,7 +472,7 @@ ersten Eintrag anzulegen. Und falls die Datenbank einen Fehler
 zurueckgibt, zeige eine verstaendliche Meldung statt einer leeren
 Seite.</pre>
       </div>
-      <p>Der dritte Fall ist der wertvollste. Wenn heute Abend etwas klemmt, siehst du damit sofort, woran es liegt.</p>
+      <p>Der dritte Fall zahlt sich aus. Wenn heute Abend etwas klemmt, siehst du damit sofort, woran es liegt.</p>
     </div>
   </details>
 
@@ -434,7 +487,6 @@ in die Datenbank zurueck. Ergaenze ausserdem bei jedem Eintrag
 einen Loeschen-Knopf, der den Eintrag nach einer Rueckfrage aus
 der Datenbank entfernt.</pre>
       </div>
-      <p>Behalte den Löschen-Knopf im Kopf. In Schritt 06 wird er nochmal wichtig, wenn es um die Frage geht, wer in einer Datenbank eigentlich was darf.</p>
     </div>
   </details>
 
@@ -442,17 +494,12 @@ der Datenbank entfernt.</pre>
     <summary><span class="sig">+++</span> Kür <span class="hint">Supabase MCP</span></summary>
     <div class="details-body">
       <p>Erst wenn alle drei Wegmarken von Hand erledigt sind. Wer die Tabelle nie selbst im Table Editor gesehen hat, versteht in Schritt 05 nicht, was die zwei Fenster zeigen.</p>
-      <p>Danach kannst du den Supabase MCP in Claude Code verbinden. Claude legt dann Tabellen an, ändert Spalten und setzt Policies, ohne dass du in den Browser wechselst. Als Übung: Lass Claude eine zweite Tabelle komplett selbst anlegen.</p>
+      <p>Danach den Supabase MCP in Claude Code verbinden. Claude legt dann Tabellen und Policies selbst an, ohne Wechsel in den Browser. Als Beispiel: eine zweite Tabelle.</p>
       <div class="warn">
-        <b>Finger weg vom Token im falschen Ort.</b> Für die MCP-Anbindung braucht Claude Zugangsdaten, beim Supabase MCP einen Personal Access Token. Der gilt für alle deine Projekte, nicht nur für dieses. Derselbe Grundsatz wie beim <code class="inline">service_role</code> key: kein Token ins Repository, kein Token in einen Chat.
+        <b>Finger weg vom Token im falschen Ort.</b> Für die Anbindung braucht Claude einen Personal Access Token, und der gilt für alle deine Projekte, nicht nur für dieses. Derselbe Grundsatz wie beim <code class="inline">service_role</code> key: kein Token ins Repository, kein Token in einen Chat.
       </div>
     </div>
   </details>
-
-  <div class="linear">
-    <b>Linear</b>
-    Issue „Anwendung erfasst und zeigt als Tabelle" auf Done. Danach Pause.
-  </div>
 </div>
 </section>
 
@@ -495,28 +542,36 @@ der Datenbank entfernt.</pre>
 <div class="wrap">
   <div class="step-head">
     <div class="step-num">06</div>
-    <h2>Backlog und was als Nächstes kommt</h2>
+    <h2>Abschluss und Ausblick</h2>
   </div>
   <p class="duration">ca. 10 Minuten</p>
 
-  <h3>Rechte, der Ausblick</h3>
+  <h3>1 · Das offene Issue</h3>
+  <div class="linear">
+    <b>Linear</b>
+    Das zweite Issue aus Schritt 01 auf Done setzen, wenn die Anwendung Einträge erfasst und als Tabelle zeigt.
+  </div>
+
+  <h3>2 · Echte Zugriffsregeln</h3>
   <p>Heute steht überall <code class="inline">using (true)</code>: jeder darf alles. Für echte Daten muss die Regel an den angemeldeten Nutzer gebunden sein.</p>
   <p>Die Regel steht in der Datenbank, nicht im Programm. Deshalb kann sie niemand umgehen, indem er die Anwendung verändert.</p>
 
-  <h3>Backlog</h3>
-  <p>Was heute nicht fertig wurde, ist kein Versäumnis, sondern deine Arbeitsliste. Die vier Issues von heute und das Backlog sind dieselbe Sorte Eintrag. Das eine ist erledigt, das andere noch nicht.</p>
+  <h3>3 · Backlog füllen</h3>
+  <p>Die Issues von heute und das Backlog sind dieselbe Sorte Eintrag. Das eine ist erledigt, das andere noch nicht. Trag Ergebnisse ein, beginnend mit dem Punkt von eben:</p>
+  <ul class="plus">
+    <li>Zugriffsregeln an den angemeldeten Nutzer gebunden</li>
+    <li>Anmeldung mit Mailadresse und Passwort</li>
+    <li>Zweite Tabelle mit Bezug zur ersten</li>
+    <li>Suche und Filter über die Liste</li>
+    <li>Anwendung läuft auf dem eigenen VPS</li>
+  </ul>
 
-  <div class="linear">
-    <b>Linear</b>
-    Trag jetzt Ergebnisse ein, nicht Tätigkeiten:
-    <ul class="plus">
-      <li>Anmeldung mit Mailadresse und Passwort</li>
-      <li>Zugriffsregeln an den angemeldeten Nutzer gebunden</li>
-      <li>Zweite Tabelle mit Bezug zur ersten</li>
-      <li>Suche und Filter über die Liste</li>
-      <li>Anwendung läuft auf dem eigenen VPS</li>
-    </ul>
-  </div>
+  <h3>4 · Weg ins Netz</h3>
+  <p>Deine Anwendung läuft bisher nur lokal. Der Weg auf den eigenen VPS ist dir bekannt, das Hello World steht ja schon dort. Bei einer Anwendung mit Datenbank sind zwei Dinge anders:</p>
+  <ul class="plus">
+    <li>Die <code class="inline">.env</code> gehört nicht ins Repository. Die beiden Werte hinterlegst du in Coolify als Umgebungsvariablen.</li>
+    <li>Änderst du sie dort später, reicht kein Neustart. Die Anwendung muss neu gebaut werden, weil die Werte beim Bauen fest eingesetzt werden.</li>
+  </ul>
 
   <details>
     <summary><span class="sig">+++</span> Kür <span class="hint">Linear MCP</span></summary>
@@ -527,13 +582,6 @@ der Datenbank entfernt.</pre>
       </div>
     </div>
   </details>
-
-  <h3>Ausblick: der Weg ins Netz</h3>
-  <p>Deine Anwendung läuft bisher nur lokal. Der Weg auf den eigenen VPS ist dir bekannt, das Hello World steht ja schon dort. Bei einer Anwendung mit Datenbank sind zwei Dinge anders:</p>
-  <ul class="plus">
-    <li>Die <code class="inline">.env</code> gehört nicht ins Repository. Die beiden Werte hinterlegst du in Coolify als Umgebungsvariablen.</li>
-    <li>Änderst du sie dort später, reicht kein Neustart. Die Anwendung muss neu gebaut werden, weil die Werte beim Bauen fest eingesetzt werden.</li>
-  </ul>
 
   <p>Und der nächste Schritt danach, nicht der heutige: Claude arbeitet nicht mehr nur an deinem Code. Mit MCP greift er auch auf deine Datenbank und dein Backlog zu.</p>
 
@@ -554,7 +602,7 @@ der Datenbank entfernt.</pre>
   </div>
 </footer>
 
-<script src="/assets/js/main.js?v=20260810c"></script>
+<script src="/assets/js/main.js?v=20260810d"></script>
 
 </body>
 </html>
